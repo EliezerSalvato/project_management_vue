@@ -1,0 +1,59 @@
+---
+description: Vue pages and components conventions
+globs: src/pages/**/*.vue,src/components/**/*.vue
+alwaysApply: false
+---
+
+# Vue pages & components
+
+- Always Composition API + `<script setup lang="ts">` + TypeScript.
+- Keep business logic out of UI when possible; one responsibility per component.
+- Reuse shells: `Loading`, `NotificationMessage`.
+- Form controls: `components/inputs/` (`InputText`).
+- Never call `fetch` or build HTTP/transform API payloads here — use `@/api/*` and transformers.
+
+## Input error contract
+
+Inputs never read errors from a store; the page passes them down as `errors: string[]`
+(see `InputText`), rendering `errors[0]`. New inputs follow the same shape.
+
+Error state adds `form-input-error` to the base class and renders the message in `.form-help-error`.
+
+## Props & emits
+
+```ts
+interface Props {
+  user: User
+  disabled?: boolean
+}
+
+const props = defineProps<Props>()
+
+const emit = defineEmits<{
+  save: [user: User]
+  cancel: []
+}>()
+```
+
+`withDefaults()` when optional props need defaults. Avoid runtime prop declarations unless required.
+
+## State & templates
+
+- Prefer `computed()` over watchers; `watch()` only for side effects.
+- `ref()` for primitives/single values; `reactive()` for multi-field forms.
+- Keep templates declarative; move non-trivial expressions to `computed()` or functions.
+- Component classes from `main.css` for recurring patterns.
+  Inline styles only when dynamic (e.g. a color swatch).
+
+## Loading
+
+```ts
+const loading = ref(false)
+
+try {
+  loading.value = true
+  // ...
+} finally {
+  loading.value = false
+}
+```

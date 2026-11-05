@@ -1,0 +1,46 @@
+---
+description: Code style and import order
+paths:
+  - "src/**/*.ts"
+  - "src/**/*.vue"
+---
+
+# Code style
+
+- Early returns; small functions; descriptive names.
+- Comments explain _why_, never _what_.
+- Prefer absolute imports (`@/...`).
+
+Formatting: `PostToolUse` hook in `.claude/settings.json` (runs `.cursor/hooks/format.sh`). Do not hand-tune. Fallback: `pnpm lint && pnpm format`. Typecheck: `pnpm type-check`.
+
+## Import order (manual)
+
+1. Side-effect (`import '...'`) — blank line after
+2. Type-only (`import type` / `import { type ... }`)
+3. Named/destructured
+4. Default
+
+Within type and named groups: sort by number of imported items (ascending), then alphabetically. Defaults: alphabetically by imported name (or module path on tie).
+
+```ts
+// ❌ Avoid
+import i18n from '@/locales'
+import { computed, ref } from 'vue'
+import '@/assets/main.css'
+import { useAuthStore } from '@/stores/auth'
+import type { AuthSessionSuccessResponse, LoginForm } from '@/types/auth'
+import { createRouter, createWebHistory } from 'vue-router'
+import InputText from '@/components/inputs/InputText.vue'
+import type { User } from '@/types/user'
+
+// ✅ Prefer
+import '@/assets/main.css'
+
+import type { User } from '@/types/user'
+import type { AuthSessionSuccessResponse, LoginForm } from '@/types/auth'
+import { useAuthStore } from '@/stores/auth'
+import { computed, ref } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
+import i18n from '@/locales'
+import InputText from '@/components/inputs/InputText.vue'
+```
