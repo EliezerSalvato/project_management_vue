@@ -1,0 +1,51 @@
+# Isolated copy of project_management_ruby_api for the real-API e2e suite.
+# Own project name, database (in memory) and Mailpit, so it never touches the dev stack.
+# Runs in `development` because `test` discards emails, and the confirmation/reset flows need them.
+name: pm-e2e
+
+services:
+  api:
+    build:
+      context: ${API_PATH:-../../../project_management_ruby_api}
+      dockerfile: Dockerfile.dev
+    # Pid file outside /app: the build context may contain the dev server's tmp/pids/server.pid.
+    command: ['./bin/rails', 'server', '-b', '0.0.0.0', '-P', '/tmp/server.pid']
+    environment:
+      RAILS_ENV: development
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pm_e2e
+      SECRET_KEY_BASE: e2e_secret_key_base_not_for_production_use_only
+      RAILS_MAX_THREADS: 5
+      RAILS_LOG_LEVEL: warn
+      FRONTEND_URL: http://localhost:4179
+      CORS_ORIGINS: http://localhost:4179
+    ports:
+      - '3100:3000'
+    volumes:
+      # Loads after config/initializers/rack_attack.rb (alphabetical order).
+      - ./disable_rate_limit.rb:/app/config/initializers/zz_e2e_disable_rate_limit.rb:ro
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:18
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+  # Service name must stay `mailpit`: the API's development SMTP host is hardcoded to it.
+  mailpit:
+    image: axllent/mailpit
+    ports:
+      - '8126:8025'
