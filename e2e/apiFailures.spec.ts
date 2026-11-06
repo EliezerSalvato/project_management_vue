@@ -19,7 +19,7 @@ test.describe('API failures', () => {
 
     await signInWithForm(page)
 
-    await expect(page.locator('.notification-danger')).toHaveText(
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
       'Something went wrong. Please try again.',
     )
     await expect(page).toHaveURL('/users/sign-in')
@@ -30,7 +30,7 @@ test.describe('API failures', () => {
 
     await signInWithForm(page)
 
-    await expect(page.locator('.notification-danger')).toHaveText(
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
       'Something went wrong. Please try again.',
     )
   })
@@ -40,7 +40,7 @@ test.describe('API failures', () => {
 
     await signInWithForm(page)
 
-    await expect(page.locator('.notification-danger')).toHaveText(
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
       'Too many requests. Wait a moment and try again.',
     )
   })
@@ -53,7 +53,9 @@ test.describe('API failures', () => {
 
     await signInWithForm(page)
 
-    await expect(page.locator('.notification-danger')).toHaveText('Slow down: retry in 60 seconds.')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+      'Slow down: retry in 60 seconds.',
+    )
   })
 
   test('disables the submit while the request is in flight', async ({ page, api }) => {

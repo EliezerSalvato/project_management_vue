@@ -37,7 +37,7 @@ test.describe('Locale', () => {
       await page.goto('/users/sign-in')
       await signInWithForm(page)
 
-      await expect(page.locator('.notification-danger')).toHaveText(
+      await expect(page.locator('.notification-danger .notification-text')).toHaveText(
         'Algo deu errado. Por favor, tente novamente.',
       )
     })

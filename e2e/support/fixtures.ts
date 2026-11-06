@@ -213,12 +213,13 @@ export const test = base.extend<Fixtures>({
 
 /**
  * Field by its visible label. Playwright matches the label's raw text, which includes the
- * required marker (`Email *`) even though it is aria-hidden, so the marker is optional here.
+ * required marker (`Email *` or `Email (Required)`) even when it is aria-hidden, so the
+ * marker is optional here.
  */
 export function byLabel(within: Page | Locator, label: string) {
   const escaped = label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 
-  return within.getByLabel(new RegExp(`^${escaped}( \\*)?$`))
+  return within.getByLabel(new RegExp(`^${escaped}( \\*| \\(.+\\))?$`))
 }
 
 /** Wrapper `.form-field` of the input with the given `name` (scoped to `within`). */
@@ -234,7 +235,8 @@ export async function signInWithForm(page: Page, { rememberMe = false } = {}) {
   await page.getByLabel(/^(Email|E-mail)$/).fill(defaultUser.email)
   await page.getByLabel(/^(Password|Senha)$/).fill('secret123')
 
-  if (rememberMe) await page.getByRole('checkbox').check()
+  // The switch input is visually hidden, so toggle it through its label.
+  if (rememberMe) await page.locator('.toggle-switch').click()
 
   await page.getByRole('button', { name: /^(Login|Entrar)$/ }).click()
 }

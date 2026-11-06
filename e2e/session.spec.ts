@@ -100,7 +100,9 @@ test.describe('Session', () => {
         }),
       )
 
-      const passwordPanel = page.locator('.panel').filter({ hasText: 'Change Password' })
+      const passwordPanel = page
+        .locator('.project-form-panel')
+        .filter({ hasText: 'Change Password' })
 
       await byLabel(passwordPanel, 'Current password').fill('wrong-password')
       await byLabel(passwordPanel, 'New password').fill('newsecret123')

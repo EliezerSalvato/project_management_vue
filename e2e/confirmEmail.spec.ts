@@ -6,7 +6,9 @@ test.describe('Email confirmation', () => {
   test('shows an error when the token is missing', async ({ page, api }) => {
     await page.goto('/users/confirmation')
 
-    await expect(page.locator('.notification-danger')).toHaveText('Confirmation token is missing.')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+      'Confirmation token is missing.',
+    )
     expect(api.requestsTo('POST', CONFIRMATIONS_PATH)).toHaveLength(0)
   })
 
@@ -32,7 +34,7 @@ test.describe('Email confirmation', () => {
 
     await page.goto('/users/confirmation?token=bad-token')
 
-    await expect(page.locator('.notification-danger')).toHaveText('is invalid')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText('is invalid')
     await expect(page).toHaveURL('/users/confirmation?token=bad-token')
   })
 })

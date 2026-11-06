@@ -61,21 +61,28 @@ test.describe('Projects list', () => {
     await expect(page.getByRole('heading', { name: 'Nenhum projeto' })).toBeVisible()
   })
 
-  test('shows only the logo and the search icon in the header', async ({ page, api }) => {
+  test('shows the logo, the search icon and the account actions in the header', async ({
+    page,
+    api,
+  }) => {
     api.signIn(ptBrUser)
     api.on('GET', PROJECTS_PATH, { body: projectsPage([]) })
 
     await page.goto('/projects')
 
     const header = page.getByRole('banner')
-    await expect(header.getByRole('link')).toHaveCount(1)
-    await expect(header.getByRole('link')).toHaveText('Gerenciador de Projetos')
-    await expect(header.getByRole('link').locator('img')).toBeVisible()
-    await expect(header.getByRole('button')).toHaveCount(1)
+    const logo = header.getByRole('link', { name: 'Gerenciador de Projetos' })
+    await expect(logo).toBeVisible()
+    await expect(logo.locator('img')).toBeVisible()
     await expect(header.getByRole('button', { name: 'Buscar' })).toBeVisible()
+    await expect(header.getByRole('link', { name: 'Editar perfil' })).toBeVisible()
+    await expect(header.getByRole('button', { name: 'Sair' })).toBeVisible()
+    await expect(header.locator('.locale-switcher').getByRole('button')).toBeVisible()
+    await expect(header.getByRole('link')).toHaveCount(2)
+    await expect(header.getByRole('button')).toHaveCount(3)
     await expect(header.getByRole('textbox')).toHaveCount(0)
 
-    // Form pages: the logo only, no search icon (new-project.png, edit-project.png).
+    // Form pages: same header without the search icon (new-project.png, edit-project.png).
     const project = buildProject({ id: '7' })
     api.on('GET', projectPath(project.id), { body: projectResponse(project) })
     for (const path of ['/projects/new', `/projects/${project.id}/edit`]) {
@@ -83,10 +90,10 @@ test.describe('Projects list', () => {
       await expect(page.getByLabel('Nome do projeto')).toBeVisible()
 
       await expect(header).toHaveCount(1)
-      await expect(header.getByRole('link')).toHaveCount(1)
-      await expect(header.getByRole('link')).toHaveText('Gerenciador de Projetos')
-      await expect(header.getByRole('link').locator('img')).toBeVisible()
-      await expect(header.getByRole('button')).toHaveCount(0)
+      await expect(logo).toBeVisible()
+      await expect(header.getByRole('button', { name: 'Buscar' })).toHaveCount(0)
+      await expect(header.getByRole('link')).toHaveCount(2)
+      await expect(header.getByRole('button')).toHaveCount(2)
       await expect(header.getByRole('textbox')).toHaveCount(0)
       await expect(header.locator('input, select, textarea')).toHaveCount(0)
     }

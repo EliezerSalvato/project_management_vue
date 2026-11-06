@@ -57,7 +57,9 @@ test.describe('Auth (real API)', () => {
 
     await signIn(page, { email: user.email, password: 'wrong-password' })
 
-    await expect(page.locator('.notification-danger')).toHaveText('Email or password is invalid')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+      'Email or password is invalid',
+    )
     await expect(page).toHaveURL('/users/sign-in')
   })
 
@@ -66,7 +68,9 @@ test.describe('Auth (real API)', () => {
 
     await signIn(page, user)
 
-    await expect(page.locator('.notification-danger')).toHaveText('User email is not verified')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+      'User email is not verified',
+    )
   })
 
   test('shows an error for an invalid confirmation link', async ({ page }) => {
@@ -87,7 +91,9 @@ test.describe('Auth (real API)', () => {
       await page.getByRole('button', { name: 'Entrar' }).click()
 
       // The locale cookie the app sets on localhost reaches the API on another port.
-      await expect(page.locator('.notification-danger')).toHaveText('E-mail ou senha inválidos')
+      await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+        'E-mail ou senha inválidos',
+      )
     })
   })
 })

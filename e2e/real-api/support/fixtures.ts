@@ -108,7 +108,11 @@ export async function signIn(
   await byLabel(page, 'Email').fill(email)
   await byLabel(page, 'Password').fill(password)
 
-  if (rememberMe) await page.getByRole('checkbox', { name: 'Remember me' }).check()
+  // The switch input is visually hidden, so toggle it through its label.
+  if (rememberMe) {
+    await page.getByText('Remember me').click()
+    await expect(page.getByRole('switch', { name: 'Remember me' })).toBeChecked()
+  }
 
   await page.getByRole('button', { name: 'Login' }).click()
 }

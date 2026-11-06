@@ -53,7 +53,9 @@ test.describe('Forgot password', () => {
     await byLabel(page, 'Email').fill('nobody@example.com')
     await page.getByRole('button', { name: 'Send me reset password instructions' }).click()
 
-    await expect(page.locator('.notification-danger')).toHaveText('Email not found.')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+      'Email not found.',
+    )
     await expect(page.locator('.notification-success')).toHaveCount(0)
   })
 })
@@ -65,7 +67,9 @@ test.describe('Reset password', () => {
     await byLabel(page, 'Confirm new password').fill('newsecret123')
     await page.getByRole('button', { name: 'Change my password' }).click()
 
-    await expect(page.locator('.notification-danger')).toHaveText("can't be blank")
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+      "can't be blank",
+    )
     expect(api.requestsTo('PATCH', RESETS_PATH)).toHaveLength(0)
   })
 
@@ -109,7 +113,7 @@ test.describe('Reset password', () => {
     await byLabel(page, 'Confirm new password').fill('newsecret123')
     await page.getByRole('button', { name: 'Change my password' }).click()
 
-    await expect(page.locator('.notification-danger')).toHaveText('has expired')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText('has expired')
     await expect(page).toHaveURL('/users/password/edit?token=expired')
   })
 })

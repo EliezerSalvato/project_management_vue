@@ -37,7 +37,7 @@ test.describe('Account (real API)', () => {
       const user = await createUser(request)
 
       await signIn(page, user, { redirect: '/users/profile' })
-      const panel = page.locator('.panel').filter({ hasText: 'Change Password' })
+      const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Password' })
 
       await byLabel(panel, 'Current password').fill('wrong-password')
       await byLabel(panel, 'New password').fill(NEW_PASSWORD)
@@ -52,7 +52,7 @@ test.describe('Account (real API)', () => {
       const user = await createUser(request)
 
       await signIn(page, user, { redirect: '/users/profile' })
-      const panel = page.locator('.panel').filter({ hasText: 'Change Password' })
+      const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Password' })
 
       await byLabel(panel, 'Current password').fill(user.password)
       await byLabel(panel, 'New password').fill(NEW_PASSWORD)
@@ -63,7 +63,9 @@ test.describe('Account (real API)', () => {
       await expect(page.locator('.notification-success')).toBeVisible()
 
       await signIn(page, user)
-      await expect(page.locator('.notification-danger')).toHaveText('Email or password is invalid')
+      await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+        'Email or password is invalid',
+      )
 
       await signIn(page, { email: user.email, password: NEW_PASSWORD })
       await expect(page).toHaveURL('/projects')
@@ -74,7 +76,7 @@ test.describe('Account (real API)', () => {
       const newEmail = uniqueEmail()
 
       await signIn(page, user, { redirect: '/users/profile' })
-      const panel = page.locator('.panel').filter({ hasText: 'Change Email' })
+      const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Email' })
 
       await byLabel(panel, 'Current password').fill(user.password)
       await byLabel(panel, 'Email').fill(newEmail)

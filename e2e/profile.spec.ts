@@ -32,7 +32,9 @@ test.describe('Profile', () => {
           status: 422,
           body: errorResponse('Validation failed', { first_name: ['is too long'] }),
         })
-        const panel = page.locator('.panel').filter({ hasText: 'Profile' }).first()
+        const panel = page
+          .locator('.project-form-panel')
+          .filter({ hasText: 'Personal information' })
 
         await panel.getByRole('button', { name: 'Save' }).click()
 
@@ -42,18 +44,22 @@ test.describe('Profile', () => {
 
       test('shows a generic error when the server fails', async ({ page, api }) => {
         api.on('PATCH', PROFILES_PATH, { status: 500 })
-        const panel = page.locator('.panel').filter({ hasText: 'Profile' }).first()
+        const panel = page
+          .locator('.project-form-panel')
+          .filter({ hasText: 'Personal information' })
 
         await panel.getByRole('button', { name: 'Save' }).click()
 
-        await expect(panel.locator('.notification-danger')).toHaveText(
+        await expect(panel.locator('.notification-danger .notification-text')).toHaveText(
           'Something went wrong. Please try again.',
         )
       })
 
       test('is prefilled and can be updated', async ({ page, api }) => {
         api.on('PATCH', PROFILES_PATH, { body: messageResponse('Profile updated.') })
-        const panel = page.locator('.panel').filter({ hasText: 'Profile' }).first()
+        const panel = page
+          .locator('.project-form-panel')
+          .filter({ hasText: 'Personal information' })
 
         await expect(byLabel(panel, 'First name')).toHaveValue('Ada')
         await expect(byLabel(panel, 'Last name')).toHaveValue('Lovelace')
@@ -70,7 +76,9 @@ test.describe('Profile', () => {
       })
 
       test('validates required fields', async ({ page, api }) => {
-        const panel = page.locator('.panel').filter({ hasText: 'Profile' }).first()
+        const panel = page
+          .locator('.project-form-panel')
+          .filter({ hasText: 'Personal information' })
 
         await byLabel(panel, 'First name').fill('')
         await byLabel(panel, 'Last name').fill('')
@@ -87,7 +95,7 @@ test.describe('Profile', () => {
         api.on('PATCH', EMAIL_CHANGES_PATH, {
           body: messageResponse('Confirm your new email to finish the change.'),
         })
-        const panel = page.locator('.panel').filter({ hasText: 'Change Email' })
+        const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Email' })
 
         await expect(byLabel(panel, 'Email')).toHaveValue('ada@example.com')
 
@@ -111,7 +119,7 @@ test.describe('Profile', () => {
           status: 422,
           body: errorResponse('Validation failed', { current_password: ['is invalid'] }),
         })
-        const panel = page.locator('.panel').filter({ hasText: 'Change Email' })
+        const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Email' })
 
         await byLabel(panel, 'Current password').fill('wrong')
         await panel.getByRole('button', { name: 'Save' }).click()
@@ -128,7 +136,7 @@ test.describe('Profile', () => {
         api.on('DELETE', REVOKES_PATH, { status: 500 })
         // The email change itself invalidates the server sessions.
         api.signOut()
-        const panel = page.locator('.panel').filter({ hasText: 'Change Email' })
+        const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Email' })
 
         await byLabel(panel, 'Current password').fill('secret123')
         await panel.getByRole('button', { name: 'Save' }).click()
@@ -146,7 +154,7 @@ test.describe('Profile', () => {
           status: 422,
           body: errorResponse('Validation failed', { current_password: ['is invalid'] }),
         })
-        const panel = page.locator('.panel').filter({ hasText: 'Change Password' })
+        const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Password' })
 
         await byLabel(panel, 'Current password').fill('wrong')
         await byLabel(panel, 'New password').fill('newsecret123')
@@ -159,7 +167,7 @@ test.describe('Profile', () => {
       })
 
       test('validates length and confirmation', async ({ page, api }) => {
-        const panel = page.locator('.panel').filter({ hasText: 'Change Password' })
+        const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Password' })
 
         await byLabel(panel, 'Current password').fill('secret123')
         await byLabel(panel, 'New password').fill('short')
@@ -179,7 +187,7 @@ test.describe('Profile', () => {
         api.on('PATCH', PASSWORD_CHANGES_PATH, {
           body: messageResponse('Password updated. Please sign in again.'),
         })
-        const panel = page.locator('.panel').filter({ hasText: 'Change Password' })
+        const panel = page.locator('.project-form-panel').filter({ hasText: 'Change Password' })
 
         await byLabel(panel, 'Current password').fill('secret123')
         await byLabel(panel, 'New password').fill('newsecret123')

@@ -25,7 +25,8 @@ test.describe('Login', () => {
     await page.goto('/users/sign-in')
     await byLabel(page, 'Email').fill('ada@example.com')
     await byLabel(page, 'Password').fill('secret123')
-    await page.getByLabel('Remember me').check()
+    await page.getByText('Remember me').click()
+    await expect(page.getByRole('switch', { name: 'Remember me' })).toBeChecked()
     await page.getByRole('button', { name: 'Login' }).click()
 
     await expect(page).toHaveURL('/projects')
@@ -73,7 +74,9 @@ test.describe('Login', () => {
     await byLabel(page, 'Password').fill('wrong-password')
     await page.getByRole('button', { name: 'Login' }).click()
 
-    await expect(page.locator('.notification-danger')).toHaveText('Invalid email or password.')
+    await expect(page.locator('.notification-danger .notification-text')).toHaveText(
+      'Invalid email or password.',
+    )
     await expect(page).toHaveURL('/users/sign-in')
 
     await page.locator('.notification-danger').getByRole('button', { name: 'close' }).click()
