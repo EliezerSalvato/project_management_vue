@@ -980,7 +980,7 @@ input {
   display: flex;
   flex-direction: column;
   width: 240px;
-  border-radius: 0 0 8px 8px;
+  border-radius: 8px;
   background: #fff;
   box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
 }
@@ -1030,6 +1030,10 @@ input {
 .project-card-menu-item:hover + .project-card-menu-item::before {
   right: 0;
   left: 0;
+}
+
+.project-card-menu-item:first-child {
+  border-radius: 8px 8px 0 0;
 }
 
 .project-card-menu-item:last-child {
