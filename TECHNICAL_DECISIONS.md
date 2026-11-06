@@ -40,6 +40,20 @@ Solução consolidada para internacionalização, permitindo suportar múltiplos
 
 Evita dependências extras, já que a API nativa do navegador atende às necessidades do projeto.
 
+## Decisões de implementação
+
+### Scroll infinito com paginação por cursor
+
+A API pagina por cursor (`after`/`next`), sem número de página, então a lista de projetos carrega a próxima página quando o fim da lista fica visível (`useInfiniteList` + `IntersectionObserver` nativo), em vez de usar um paginador numerado.
+
+### Buscas recentes no `localStorage`, por usuário
+
+É um dado só de interface, que não justifica endpoint nem store; a chave inclui o id do usuário (`projects.recentSearches.<userId>`) para que contas diferentes no mesmo navegador não compartilhem o histórico.
+
+### Destaque de busca sem diferenciar acentos e maiúsculas
+
+O termo e o texto são normalizados (NFD, sem diacríticos, minúsculos) antes da comparação, para que "acao" destaque "Ação", algo essencial para conteúdo em pt-BR.
+
 ## Qualidade de código
 
 ### ESLint

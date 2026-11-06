@@ -62,9 +62,16 @@ Existing stores: `auth`, `user`, `notification`.
 5. `router/` — module + spread into `router/index.ts`; `meta.requiresAuth` when needed
 6. Locales — `en` + `pt-BR` (`locales/common/` for shared keys; domain folders with `en.ts` / `pt-BR.ts`)
 
-There are no list shells yet (no `IndexPanel`, `FormPanel`, `Paginator`, `ModalDelete`) and no
-pagination or list-query types. The first CRUD is the one that introduces them — build them once,
-generically, instead of inlining table and pagination markup in the page.
+**Projects** (`pages/project/`) is the reference for list CRUDs. Reuse its generic building blocks
+instead of inlining list, pagination or confirm markup in the page:
+
+- `useInfiniteList` + `InfiniteScrollSentinel.vue` — the API paginates by cursor (`after`/`next`),
+  so lists use infinite scroll; there is no numbered paginator
+- `Page<T>` / `PaginationApi` in `types/api/pagination.ts`
+- `ModalConfirm.vue` — confirmation dialogs (e.g. delete)
+- `components/inputs/` — `InputText`, `InputDate`, `SelectInput`, `ToggleSwitch`, `CoverUpload`
+
+Filters and sort live in the route query (`?sort=`, `?favorite=true`), not in a store.
 
 Before adding a dependency, store, utility, or abstraction, check that an equivalent does not already exist.
 
