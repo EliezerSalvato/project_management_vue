@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "promote_threshold": 2,
+  "window_days": 45,
+  "quarantine_threshold": 2,
+  "next_id": 7,
+  "lessons": [
+    {
+      "id": "L-001",
+      "key": "ac_gap::keep cross field date rules end not before start active even when the dependent field itself was not edited",
+      "text": "Keep cross-field date rules (end not before start) active even when the dependent field itself was not edited",
+      "signal": "ac_gap",
+      "scope": "forms",
+      "status": "candidate",
+      "features": [
+        "projects"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "src/components/project/ProjectForm.vue:68 (forms)"
+      ],
+      "created": "2026-11-05T23:43:01Z",
+      "last_seen": "2026-11-05T23:43:01Z"
+    },
+    {
+      "id": "L-002",
+      "key": "ac_gap::enforce input limits in the page that reads the url query not only in the control that builds it",
+      "text": "Enforce input limits in the page that reads the URL query, not only in the control that builds it",
+      "signal": "ac_gap",
+      "scope": "routes",
+      "status": "candidate",
+      "features": [
+        "projects"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "src/pages/project/Search.vue:20 (routes)"
+      ],
+      "created": "2026-11-05T23:43:02Z",
+      "last_seen": "2026-11-05T23:43:02Z"
+    },
+    {
+      "id": "L-003",
+      "key": "weak_test::seed more items than the stated maximum when testing an up to n limit",
+      "text": "Seed more items than the stated maximum when testing an up-to-N limit",
+      "signal": "weak_test",
+      "scope": "tests",
+      "status": "candidate",
+      "features": [
+        "projects"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C64 (tests)"
+      ],
+      "created": "2026-11-05T23:43:02Z",
+      "last_seen": "2026-11-05T23:43:02Z"
+    },
+    {
+      "id": "L-004",
+      "key": "weak_test::read related element positions in one evaluate call and wait for requests to settle before counting them in playwright tests",
+      "text": "Read related element positions in one evaluate call and wait for requests to settle before counting them in Playwright tests",
+      "signal": "weak_test",
+      "scope": "e2e",
+      "status": "candidate",
+      "features": [
+        "projects"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "e2e/projects/infiniteScroll.spec.ts:63 (e2e)"
+      ],
+      "created": "2026-11-05T23:43:02Z",
+      "last_seen": "2026-11-05T23:43:02Z"
+    },
+    {
+      "id": "L-005",
+      "key": "weak_test::assert a shared layout rule on every page it applies to not only the first one built",
+      "text": "Assert a shared layout rule on every page it applies to, not only the first one built",
+      "signal": "weak_test",
+      "scope": "e2e",
+      "status": "candidate",
+      "features": [
+        "projects"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C12 (e2e)"
+      ],
+      "created": "2026-11-05T23:43:02Z",
+      "last_seen": "2026-11-05T23:43:02Z"
+    },
+    {
+      "id": "L-006",
+      "key": "gate_fail::check the top edge of fixed bars against the capture after focusing an input since focus can scroll the page",
+      "text": "Check the top edge of fixed bars against the capture after focusing an input, since focus can scroll the page",
+      "signal": "gate_fail",
+      "scope": "css",
+      "status": "candidate",
+      "features": [
+        "projects"
+      ],
+      "recurrence": 1,
+      "harmful": 0,
+      "evidence": [
+        "C55 search-bar.running.png (css)"
+      ],
+      "created": "2026-11-05T23:43:02Z",
+      "last_seen": "2026-11-05T23:43:02Z"
+    }
+  ]
+}
