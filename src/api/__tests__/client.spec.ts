@@ -72,6 +72,29 @@ describe('apiRequest', () => {
     })
   })
 
+  it('sends FormData without a JSON content type', async () => {
+    useAuthStore().setToken('jwt')
+    fetchMock.mockResolvedValue(jsonResponse(200, {}))
+    const body = new FormData()
+    body.append('name', 'Website')
+
+    await apiRequest('/api/v1/projects', { method: 'POST', body })
+
+    const headers = headersOf(fetchMock.mock.calls[0]!)
+    expect(fetchMock.mock.calls[0]![1]!.body).toBe(body)
+    expect(headers).not.toHaveProperty('Content-Type')
+    expect(headers.Accept).toBe('application/json')
+    expect(headers.Authorization).toBe('Bearer jwt')
+  })
+
+  it('keeps the JSON content type for string bodies', async () => {
+    fetchMock.mockResolvedValue(jsonResponse(200, {}))
+
+    await apiRequest('/api/v1/ping', { method: 'PATCH', body: '{}' })
+
+    expect(headersOf(fetchMock.mock.calls[0]!)['Content-Type']).toBe('application/json')
+  })
+
   it('adds the bearer token when authenticated', async () => {
     useAuthStore().setToken('jwt')
     fetchMock.mockResolvedValue(jsonResponse(200, {}))
@@ -170,7 +193,9 @@ describe('apiRequest', () => {
 
       await Promise.all([apiRequest('/api/v1/a'), apiRequest('/api/v1/b')])
 
-      const refreshCalls = fetchMock.mock.calls.filter(([url]) => String(url).endsWith(REFRESH_PATH))
+      const refreshCalls = fetchMock.mock.calls.filter(([url]) =>
+        String(url).endsWith(REFRESH_PATH),
+      )
       expect(refreshCalls).toHaveLength(1)
     })
 

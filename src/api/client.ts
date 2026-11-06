@@ -79,8 +79,12 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions = {
   const token = useAuthStore().token
   const headers: Record<string, string> = {
     Accept: 'application/json',
-    'Content-Type': 'application/json',
     ...(fetchOptions.headers as Record<string, string> | undefined),
+  }
+
+  // The browser must set the multipart Content-Type itself so it includes the boundary.
+  if (!(fetchOptions.body instanceof FormData)) {
+    headers['Content-Type'] ??= 'application/json'
   }
 
   if (token) {
