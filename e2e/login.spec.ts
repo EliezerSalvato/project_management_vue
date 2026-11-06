@@ -28,7 +28,7 @@ test.describe('Login', () => {
     await page.getByLabel('Remember me').check()
     await page.getByRole('button', { name: 'Login' }).click()
 
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/projects')
     expect(api.lastBodyOf('POST', AUTH_PATH)).toEqual({
       email: 'ada@example.com',
       password: 'secret123',
@@ -59,7 +59,7 @@ test.describe('Login', () => {
     await byLabel(page, 'Password').fill('secret123')
     await page.getByRole('button', { name: 'Login' }).click()
 
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/projects')
   })
 
   test('shows the API error on invalid credentials', async ({ page, api }) => {
@@ -91,7 +91,7 @@ test.describe('Login', () => {
 
       await page.goto(path)
 
-      await expect(page).toHaveURL('/')
+      await expect(page).toHaveURL('/projects')
     })
   }
 

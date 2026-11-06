@@ -463,6 +463,1118 @@ input {
   animation-delay: 0.5s;
 }
 
+/* ---------- project pages (design tokens from design/files/style.css) ---------- */
+.app-main:has(.project-page) {
+  padding: 0;
+}
+
+/* Project design tokens live on :root so shared pieces outside the page (top bar, toasts) get them too. */
+:root {
+  --project-header-bg: #1c1930;
+  --project-page-bg: #f4f2ff;
+  --project-primary: #695ccd;
+  --project-title: #1f1283;
+  --project-text: #717171;
+  --project-border: #dcdcdc;
+  --project-divider: #ececec;
+  --project-ink: #1c1930;
+  --project-primary-hover: #5546b8;
+  --project-error: #c8000f;
+}
+
+.project-page {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background: var(--project-page-bg);
+  color: var(--project-ink);
+  font-family: 'Encode Sans Semi Expanded', sans-serif;
+}
+
+.project-page-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 30px 42px;
+}
+
+.project-page .loading-dots {
+  color: var(--project-primary);
+}
+
+.app-top {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+
+.app-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  padding: 0 48px;
+  background: var(--project-header-bg);
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+}
+
+.app-header-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  color: #fff;
+  font-family: 'Encode Sans Expanded', 'Encode Sans Semi Expanded', sans-serif;
+  font-size: 18px;
+  line-height: 22px;
+  text-decoration: none;
+}
+
+.app-header-logo img {
+  width: 70px;
+  height: auto;
+}
+
+.app-header-logo span {
+  max-width: 7.5em;
+}
+
+.app-header-search {
+  position: absolute;
+  right: 62px;
+  display: inline-flex;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.search-bar {
+  position: relative;
+  z-index: 30;
+  height: 80px;
+  font-family: 'Encode Sans Semi Expanded', sans-serif;
+}
+
+.search-bar-field {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 80px;
+  padding: 0 24px;
+  border: 2px solid transparent;
+  background: #fff;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+}
+
+/* The field and the recent list share one 2px purple outline, closed on all four sides. */
+.search-bar-open .search-bar-field {
+  border-color: var(--project-primary);
+  border-bottom: 1px solid var(--project-divider);
+  border-radius: 8px 8px 0 0;
+  box-shadow: none;
+}
+
+.search-bar-field img {
+  width: 22px;
+  height: 22px;
+}
+
+.search-bar-control {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  height: 100%;
+}
+
+.search-bar-input {
+  min-width: 0;
+  height: 28px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--project-ink);
+  font-family: inherit;
+  font-size: 18px;
+}
+
+.search-bar-input::placeholder {
+  color: var(--project-text);
+}
+
+/* Out of flow so the input stays vertically centered when the hint appears. */
+.search-bar-hint {
+  position: absolute;
+  top: calc(50% + 14px);
+  left: 0;
+  color: var(--project-text);
+  font-size: 13px;
+}
+
+.search-bar-recent {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  border: 2px solid var(--project-primary);
+  border-top: 0;
+  border-radius: 0 0 8px 8px;
+  background: #fff;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  list-style: none;
+}
+
+.search-bar-recent-item {
+  display: flex;
+  align-items: center;
+  height: 52px;
+  padding: 0 24px 0 24px;
+  background: #fafafa;
+}
+
+.search-bar-recent-item + .search-bar-recent-item {
+  border-top: 1px solid var(--project-divider);
+}
+
+.search-bar-recent-run,
+.search-bar-recent-remove {
+  display: inline-flex;
+  align-items: center;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.search-bar-recent-run {
+  flex: 1;
+  gap: 14px;
+  min-width: 0;
+  height: 100%;
+  color: var(--project-ink);
+  font-family: inherit;
+  font-size: 16px;
+  text-align: left;
+}
+
+.search-bar-recent-run span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.search-bar-recent-remove {
+  padding: 4px;
+}
+
+.page-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  margin: 10px 0 0 6px;
+  color: var(--project-primary);
+  font-size: 16px;
+  line-height: 20px;
+  text-decoration: none;
+}
+
+.project-page-title {
+  margin: 12px 0 15px 6px;
+  color: var(--project-title);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.project-search-empty,
+.project-list-empty,
+.project-load-error {
+  color: var(--project-text);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.project-load-error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.project-card-highlight {
+  background: #ffb23d;
+  color: #fff;
+}
+
+.btn-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 40px;
+  padding: 0 28px 0 24px;
+  border: 0;
+  border-radius: 26px;
+  background: var(--project-primary);
+  color: #fff;
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 24px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.btn-pill img {
+  width: 22px;
+  height: 22px;
+}
+
+.btn-pill-lg {
+  height: 52px;
+  padding: 0 34px 0 32px;
+  font-size: 20px;
+}
+
+.btn-pill-lg img {
+  width: 24px;
+  height: 24px;
+}
+
+.project-empty {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: #fff;
+  text-align: center;
+}
+
+.project-empty-title {
+  color: var(--project-title);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.project-empty-description {
+  margin: 24px 0 32px;
+  color: var(--project-text);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.project-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 32px;
+  margin-bottom: 22px;
+}
+
+.project-toolbar-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--project-title);
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 30px;
+}
+
+.project-toolbar-count {
+  color: var(--project-primary);
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 21px;
+}
+
+.project-toolbar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Below the width where the toolbar fits on one line: filters on top, then the title next to the
+   new-project button. */
+@media (max-width: 1023px) {
+  .project-toolbar {
+    flex-wrap: wrap;
+    gap: 8px 12px;
+  }
+
+  /* Forces the line break between the filters row and the title row. */
+  .project-toolbar::after {
+    content: '';
+    order: 2;
+    flex-basis: 100%;
+  }
+
+  .project-toolbar-actions {
+    display: contents;
+  }
+
+  /* On the narrowest screens the label wraps so the select keeps a usable width. */
+  .project-toolbar-favorites {
+    order: 1;
+    min-width: 0;
+  }
+
+  .project-toolbar-favorites .toggle-switch-track {
+    flex-shrink: 0;
+  }
+
+  .project-toolbar .project-toolbar-sort {
+    order: 1;
+    flex: 1 1 0;
+    min-width: 140px;
+    max-width: 296px;
+  }
+
+  .project-toolbar-sort .select-input-trigger {
+    gap: 8px;
+    padding: 0 12px;
+  }
+
+  .project-toolbar-sort .select-input-trigger span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .project-toolbar-sort .select-input-chevron {
+    flex-shrink: 0;
+  }
+
+  .project-toolbar-title {
+    order: 3;
+    font-size: 20px;
+    white-space: nowrap;
+  }
+
+  .project-toolbar-new {
+    order: 3;
+    min-width: 0;
+    gap: 6px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+
+  .project-toolbar-new img {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(280px, 100%), 1fr));
+  gap: 32px;
+}
+
+.infinite-scroll-sentinel {
+  height: 1px;
+}
+
+.project-card {
+  position: relative;
+  display: grid;
+  /* Cover, info, dates: rows shared with the grid so dividers line up across a row. */
+  grid-row: span 3;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  min-width: 0;
+  border-radius: 16px;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.project-card-cover {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 231px;
+  border-radius: 16px 16px 0 0;
+  background: var(--project-primary);
+}
+
+.project-card-cover-image {
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.project-card-actions {
+  position: absolute;
+  right: 16px;
+  bottom: 17px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.project-card-favorite {
+  display: inline-flex;
+  padding: 0;
+  padding-top: 8px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.project-card-favorite:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.project-card-favorite img {
+  display: block;
+  width: 30px;
+  height: 30px;
+}
+
+.project-card:hover {
+  box-shadow: 0 8px 20px rgb(28 25 48 / 15%);
+  transform: translateY(-4px);
+}
+
+.project-card-menu-open {
+  z-index: 5;
+}
+
+.project-card-menu {
+  position: relative;
+}
+
+.project-card-menu-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  cursor: pointer;
+}
+
+.project-card-menu-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  width: 240px;
+  border-radius: 0 0 8px 8px;
+  background: #fff;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+}
+
+.project-card-menu-list::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 8px;
+  border-right: 8px solid transparent;
+  border-bottom: 8px solid #fff;
+  border-left: 8px solid transparent;
+}
+
+.project-card-menu-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 52px;
+  padding: 0 20px;
+  border: 0;
+  background: transparent;
+  color: var(--project-primary);
+  font-family: inherit;
+  font-size: 16px;
+  line-height: 20px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* Divider stays inset while the hover background spans the full row. */
+.project-card-menu-item + .project-card-menu-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 16px;
+  left: 16px;
+  border-top: 1px solid var(--project-divider);
+  transition:
+    left 0.15s,
+    right 0.15s;
+}
+
+.project-card-menu-item:hover::before,
+.project-card-menu-item:hover + .project-card-menu-item::before {
+  right: 0;
+  left: 0;
+}
+
+.project-card-menu-item:last-child {
+  border-radius: 0 0 8px 8px;
+}
+
+.project-card-body {
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 0;
+  min-width: 0;
+  padding: 26px 24px 24px;
+  border: 1px solid var(--project-border);
+  border-top: 0;
+  border-radius: 0 0 16px 16px;
+  background: #fff;
+}
+
+.project-card-info {
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--project-divider);
+}
+
+.project-card-name,
+.project-card-client {
+  overflow-wrap: anywhere;
+}
+
+.project-card-name {
+  color: var(--project-title);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 25px;
+}
+
+.project-card-client {
+  margin-top: 9px;
+  color: var(--project-text);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.project-card-client strong {
+  margin-right: 8px;
+  font-weight: 700;
+}
+
+.project-card-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 18px;
+}
+
+.project-card-date {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  color: var(--project-text);
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.project-card-date img {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+.select-input {
+  position: relative;
+  width: 296px;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.select-input-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  padding: 0 20px 0 15px;
+  border: 1px solid var(--project-text);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--project-ink);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.select-input-open .select-input-trigger {
+  border-color: var(--project-primary);
+  border-radius: 8px 8px 0 0;
+}
+
+.select-input-open .select-input-chevron {
+  transform: rotate(180deg);
+}
+
+.select-input-options {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  left: 0;
+  z-index: 20;
+  margin-top: -1px;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--project-primary);
+  border-radius: 0 0 16px 16px;
+  background: #fff;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  list-style: none;
+}
+
+.select-input-option {
+  display: flex;
+  align-items: center;
+  height: 54px;
+  padding: 0 15px;
+  color: var(--project-ink);
+  cursor: pointer;
+}
+
+.select-input-option + .select-input-option {
+  border-top: 1px solid var(--project-divider);
+}
+
+.select-input-option:hover,
+.select-input-option:focus-visible {
+  background: var(--project-page-bg);
+  outline: none;
+}
+
+.toggle-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e1e1e;
+  font-size: 16px;
+  line-height: 22px;
+  cursor: pointer;
+}
+
+.toggle-switch-input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.toggle-switch-track {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  border-radius: 12px;
+  background: #53525d;
+}
+
+.toggle-switch-track::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 9999px;
+  background: #fff;
+  transition: left 0.2s;
+}
+
+.toggle-switch-input:checked + .toggle-switch-track {
+  background: #ffb23d;
+}
+
+.toggle-switch-input:checked + .toggle-switch-track::after {
+  left: 30px;
+}
+
+.toggle-switch-input:focus-visible + .toggle-switch-track {
+  outline: 2px solid var(--project-primary);
+  outline-offset: 2px;
+}
+
+/* ---------- project form ---------- */
+.project-form-panel {
+  margin-top: 13px;
+  padding: 50px 1rem 50px;
+  border: 1px solid var(--project-border);
+  border-radius: 8px;
+  background: #f7f6ff;
+}
+
+.project-form {
+  width: 100%;
+  max-width: 704px;
+  margin: 0 auto;
+}
+
+.project-form .form-field {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.project-form .form-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+  color: var(--project-primary);
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+}
+
+.form-label-required {
+  color: var(--project-text);
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.project-form .form-input {
+  height: 40px;
+  padding: 0 15px;
+  border: 1px solid var(--project-text);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--project-ink);
+  font-family: inherit;
+  font-size: 16px;
+}
+
+.project-form .form-input:focus {
+  border-color: var(--project-primary);
+  outline: none;
+}
+
+/* Errors appear on blur; laid out in the field's bottom gap so they never shift the controls
+   below mid-click (the mousedown that blurs a field would otherwise move its target). */
+.project-form .form-help-error {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-height: 0;
+  margin-top: 8px;
+  color: var(--project-error);
+  font-size: 14px;
+  line-height: 18px;
+}
+
+.project-form .form-help-error:empty {
+  display: none;
+}
+
+.project-form .form-field:has(.form-input-error) .form-label,
+.project-form .form-field:has(.form-input-error) .form-label-required,
+.project-form .form-input-error {
+  border-color: var(--project-error);
+  color: var(--project-error);
+}
+
+.project-form-dates {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 40px;
+}
+
+/* Small screens: one date per line. */
+@media (max-width: 767px) {
+  .project-form-dates {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.form-input-date {
+  position: relative;
+}
+
+.form-input-date-icon {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+/* Hidden because it is a Tab stop; the drawn icon opens the picker instead. */
+.form-input-date input::-webkit-calendar-picker-indicator {
+  display: none;
+}
+
+.form-input-empty:not(:focus)::-webkit-datetime-edit {
+  color: transparent;
+}
+
+.project-form .form-field:has(.form-input-error) .form-input-date-icon {
+  filter: brightness(0) saturate(100%) invert(12%) sepia(98%) saturate(6000%) hue-rotate(350deg);
+}
+
+.cover-upload-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+.cover-upload-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 22px 1rem 22px;
+  border: 1px dashed var(--project-text);
+  border-radius: 4px;
+  color: var(--project-text);
+  font-size: 16px;
+  line-height: 20px;
+  text-align: center;
+}
+
+.cover-upload-drop p {
+  margin: 14px 0 24px;
+}
+
+.cover-upload-drop .btn-pill {
+  min-width: 144px;
+  height: 40px;
+}
+
+.cover-upload-drop-error {
+  border-color: var(--project-error);
+}
+
+.cover-upload-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.cover-upload-image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 702 / 395;
+  object-fit: cover;
+}
+
+.cover-upload-remove {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: #fff;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  cursor: pointer;
+}
+
+.project-form-submit {
+  width: 100%;
+  height: 52px;
+  font-size: 20px;
+}
+
+.btn-pill.project-form-submit:disabled {
+  background: #aea7f9;
+  opacity: 1;
+}
+
+/* ---------- confirm modal ---------- */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: max(3rem, 26.5vh) 1rem 1rem;
+  background: rgb(0 0 0 / 75%);
+  backdrop-filter: blur(2px);
+  overflow-y: auto;
+}
+
+.modal-confirm {
+  position: relative;
+  width: 100%;
+  max-width: 582px;
+  padding: 50px 32px 32px;
+  border-radius: 4px;
+  background: #fff;
+  color: #1c1930;
+  font-family: 'Encode Sans Semi Expanded', sans-serif;
+  text-align: center;
+}
+
+.modal-confirm-icon {
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 9999px;
+  background: #695ccd;
+  box-shadow: 0 4px 4px rgb(0 0 0 / 25%);
+  transform: translateX(-50%);
+}
+
+.modal-confirm-title {
+  padding-bottom: 24px;
+  border-bottom: 1px solid #717171;
+  color: #1f1283;
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 28px;
+}
+
+.modal-confirm-message {
+  margin-top: 34px;
+  color: #717171;
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.modal-confirm-subject {
+  margin-top: 16px;
+  font-size: 24px;
+  line-height: 30px;
+  overflow-wrap: anywhere;
+}
+
+.modal-confirm-actions {
+  display: grid;
+  grid-template-columns: 226fr 260fr;
+  gap: 32px;
+  margin-top: 32px;
+}
+
+.modal-confirm-actions .btn-pill {
+  height: 52px;
+  font-size: 20px;
+}
+
+.btn-pill-outline {
+  border: 1px solid #695ccd;
+  background: #fff;
+  color: #695ccd;
+}
+
+.btn-pill:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn-pill.btn-loading {
+  position: relative;
+}
+
+.btn-pill.btn-loading::after {
+  border-color: #fff;
+  border-top-color: transparent;
+}
+
+/* ---------- button hover states ---------- */
+.btn,
+.btn-pill,
+.close-button,
+.dropdown-item,
+.navbar-item,
+.app-header-search,
+.search-bar-recent-item,
+.search-bar-recent-remove,
+.project-card-favorite,
+.project-card-menu-trigger,
+.project-card-menu-item,
+.app-header-logo,
+.toggle-switch-track,
+.cover-upload-remove,
+.select-input-trigger {
+  transition:
+    color 0.15s,
+    background-color 0.15s,
+    border-color 0.15s,
+    box-shadow 0.15s,
+    filter 0.15s,
+    opacity 0.15s;
+}
+
+.btn:hover:not(:disabled) {
+  filter: brightness(0.92);
+}
+
+.btn-pill:hover:not(:disabled) {
+  background: var(--project-primary-hover);
+}
+
+.btn-pill-outline:hover:not(:disabled) {
+  background: var(--project-page-bg);
+}
+
+.close-button:hover,
+.cover-upload-remove:hover,
+.project-card-menu-trigger:hover {
+  background: var(--project-page-bg);
+}
+
+.cover-upload-remove:hover,
+.project-card-menu-trigger:hover {
+  box-shadow: 0 6px 8px rgb(0 0 0 / 30%);
+}
+
+.dropdown-item:hover,
+.search-bar-recent-item:hover,
+.project-card-menu-item:hover {
+  background: var(--project-page-bg);
+}
+
+.navbar-item:hover,
+.app-header-search:hover,
+.search-bar-recent-remove:hover,
+.project-card-favorite:hover {
+  opacity: 0.7;
+}
+
+.select-input-trigger:hover {
+  border-color: var(--project-primary);
+}
+
+.toggle-switch:hover .toggle-switch-track {
+  box-shadow: 0 0 0 2px rgb(105 92 205 / 15%);
+}
+
+.app-header-logo:hover {
+  color: #b3a9f5;
+}
+
 /* ---------- route transition (App.vue) ---------- */
 .v-enter-from,
 .v-leave-to {
@@ -480,6 +1592,11 @@ input {
 .v-enter-active,
 .v-leave-active {
   transition: all 0.3s;
+}
+
+/* The slide pushes the page past the viewport, flashing a scrollbar while pages swap. */
+.app-main:has(> .v-enter-active, > .v-leave-active) {
+  overflow: clip;
 }
 
 @keyframes loading-dots {

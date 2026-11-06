@@ -33,7 +33,7 @@ test.describe('Session (real API)', () => {
     const user = await createUser(request)
 
     await signIn(page, user, { rememberMe: true })
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/projects')
 
     const expires = (await refreshCookie(page))?.expires ?? -1
     const inDays = (expires * 1000 - Date.now()) / (24 * 60 * 60 * 1000)
@@ -42,7 +42,7 @@ test.describe('Session (real API)', () => {
 
     // The refresh keeps asking for (and getting) a long-lived cookie.
     await page.reload()
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/projects')
     expect(((await refreshCookie(page))?.expires ?? -1) > 0).toBe(true)
   })
 
@@ -53,7 +53,7 @@ test.describe('Session (real API)', () => {
     const user = await createUser(request)
 
     await signIn(page, user)
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/projects')
 
     expect((await refreshCookie(page))?.expires).toBe(-1)
   })

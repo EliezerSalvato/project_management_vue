@@ -6,6 +6,8 @@ import authEn from './auth/en'
 import authPtBr from './auth/pt-BR'
 import commonEn from './common/en'
 import commonPtBr from './common/pt-BR'
+import projectEn from './project/en'
+import projectPtBr from './project/pt-BR'
 import userEn from './user/en'
 import userPtBr from './user/pt-BR'
 
@@ -19,6 +21,7 @@ const i18n = createI18n({
     en: {
       ...commonEn,
       auth: authEn,
+      project: projectEn,
       user: userEn,
       utils: {
         validators: validatorsEn,
@@ -28,6 +31,7 @@ const i18n = createI18n({
     'pt-BR': {
       ...commonPtBr,
       auth: authPtBr,
+      project: projectPtBr,
       user: userPtBr,
       utils: {
         validators: validatorsPtBr,

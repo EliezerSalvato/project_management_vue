@@ -123,19 +123,19 @@ test.describe('Session', () => {
     test('keeps asking for a long-lived session after a reload', async ({ page, api }) => {
       await page.goto('/users/sign-in')
       await signInWithForm(page, { rememberMe: true })
-      await expect(page).toHaveURL('/')
+      await expect(page).toHaveURL('/projects')
 
       api.signIn()
       await page.reload()
 
-      await expect(page).toHaveURL('/')
+      await expect(page).toHaveURL('/projects')
       expect(api.lastBodyOf('PATCH', REFRESH_PATH)).toEqual({ remember_me: true })
     })
 
     test('asks for a short session when unchecked', async ({ page, api }) => {
       await page.goto('/users/sign-in')
       await signInWithForm(page)
-      await expect(page).toHaveURL('/')
+      await expect(page).toHaveURL('/projects')
 
       expect(await page.evaluate(() => localStorage.getItem('rememberMe'))).toBeNull()
       expect(api.lastBodyOf('POST', '/api/v1/user/authentications')).toMatchObject({
@@ -145,7 +145,7 @@ test.describe('Session', () => {
       api.signIn()
       await page.reload()
 
-      await expect(page).toHaveURL('/')
+      await expect(page).toHaveURL('/projects')
       expect(api.lastBodyOf('PATCH', REFRESH_PATH)).toEqual({ remember_me: false })
     })
   })

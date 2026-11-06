@@ -1,9 +1,18 @@
 import { useAuthStore } from '@/stores/auth'
 import { useNotificationStore } from '@/stores/notification'
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '@/pages/Home.vue'
 import NotFound from '@/pages/NotFound.vue'
+import projectsRoutes from '@/router/projects'
 import usersRoutes from '@/router/users'
+
+declare module 'vue-router' {
+  interface RouteMeta {
+    requiresAuth?: boolean
+    requiresGuest?: boolean
+    /** Render the shared top bar (logo + search) above the page. */
+    appHeader?: boolean
+  }
+}
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -11,9 +20,9 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home,
-      meta: { requiresAuth: true },
+      redirect: { name: 'projects' },
     },
+    ...projectsRoutes,
     ...usersRoutes,
     {
       path: '/:pathMatch(.*)*',

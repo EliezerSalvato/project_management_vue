@@ -64,7 +64,7 @@ describe('router guards', () => {
     await router.push('/')
 
     expect(refreshSession).not.toHaveBeenCalled()
-    expect(router.currentRoute.value.name).toBe('home')
+    expect(router.currentRoute.value.name).toBe('projects')
   })
 
   it('redirects authenticated users away from guest-only routes', async () => {
@@ -72,7 +72,7 @@ describe('router guards', () => {
 
     await router.push('/users/sign-up')
 
-    expect(router.currentRoute.value.name).toBe('home')
+    expect(router.currentRoute.value.name).toBe('projects')
   })
 
   it('lets guests open guest-only routes', async () => {

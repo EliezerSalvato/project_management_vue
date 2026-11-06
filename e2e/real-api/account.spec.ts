@@ -29,7 +29,7 @@ test.describe('Account (real API)', () => {
     await expect(page.locator('.notification-success')).toBeVisible()
 
     await signIn(page, { email: user.email, password: NEW_PASSWORD })
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/projects')
   })
 
   test.describe('profile', () => {
@@ -66,7 +66,7 @@ test.describe('Account (real API)', () => {
       await expect(page.locator('.notification-danger')).toHaveText('Email or password is invalid')
 
       await signIn(page, { email: user.email, password: NEW_PASSWORD })
-      await expect(page).toHaveURL('/')
+      await expect(page).toHaveURL('/projects')
     })
 
     test('changes the email after confirming the new address', async ({ page, request }) => {

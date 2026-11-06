@@ -75,7 +75,7 @@ test.describe('API failures', () => {
     await byLabel(page, 'Password').press('Enter')
     gate.resolve()
 
-    await expect(page).toHaveURL('/')
+    await expect(page).toHaveURL('/projects')
     expect(api.requestsTo('POST', AUTH_PATH)).toHaveLength(1)
   })
 })
