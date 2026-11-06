@@ -14,11 +14,13 @@ const emit = defineEmits<{
 
 const slots = useSlots()
 const notificationStore = useNotificationStore()
-const { currentMessage, currentMessageType } = storeToRefs(notificationStore)
+const { currentMessage, currentMessageType, messageKey } = storeToRefs(notificationStore)
 
 const isLocal = computed(() => Boolean(slots.default))
-const isVisible = computed(() => isLocal.value || Boolean(currentMessage.value))
 const currentType = computed(() => props.type || currentMessageType.value)
+const typeClass = computed(() =>
+  currentType.value === 'danger' ? 'notification-danger' : 'notification-success',
+)
 const icon = computed(() => (currentType.value === 'danger' ? '✕' : '✓'))
 
 function close() {
@@ -31,17 +33,25 @@ function close() {
 </script>
 
 <template>
-  <div
-    v-if="isVisible"
-    class="notification"
-    :class="currentType === 'danger' ? 'notification-danger' : 'notification-success'"
-  >
+  <div v-if="isLocal" class="notification" :class="typeClass">
     <button type="button" class="close-button" :aria-label="'close'" @click="close"></button>
-    <slot>
-      <p>
-        <span aria-hidden="true">{{ icon }}</span>
-        {{ currentMessage }}
-      </p>
-    </slot>
+    <slot />
+  </div>
+
+  <div v-else class="notification-stack" aria-live="polite">
+    <Transition name="notification" mode="out-in">
+      <div
+        v-if="currentMessage"
+        :key="messageKey"
+        class="notification notification-toast"
+        :class="typeClass"
+        role="status"
+      >
+        <span class="notification-icon" aria-hidden="true">{{ icon }}</span>
+        <p class="notification-text">{{ currentMessage }}</p>
+        <button type="button" class="close-button" :aria-label="'close'" @click="close"></button>
+        <span class="notification-progress" @animationend="close"></span>
+      </div>
+    </Transition>
   </div>
 </template>

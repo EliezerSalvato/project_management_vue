@@ -37,7 +37,7 @@ test.describe('Profile', () => {
         await panel.getByRole('button', { name: 'Save' }).click()
 
         await expect(fieldError(panel, 'firstName')).toHaveText('is too long')
-        await expect(panel.locator('.notification-success')).toHaveCount(0)
+        await expect(page.locator('.notification-success')).toHaveCount(0)
       })
 
       test('shows a generic error when the server fails', async ({ page, api }) => {
@@ -62,7 +62,7 @@ test.describe('Profile', () => {
         await byLabel(panel, 'Last name').fill('King')
         await panel.getByRole('button', { name: 'Save' }).click()
 
-        await expect(panel.locator('.notification-success')).toContainText('Profile updated.')
+        await expect(page.locator('.notification-success')).toContainText('Profile updated.')
         expect(api.lastBodyOf('PATCH', PROFILES_PATH)).toEqual({
           first_name: 'Augusta',
           last_name: 'King',

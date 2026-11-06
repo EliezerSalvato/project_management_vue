@@ -56,8 +56,6 @@ async function onSubmit() {
       <h1 class="title">{{ t('auth.login.title') }}</h1>
 
       <form @submit.prevent="onSubmit">
-        <NotificationMessage />
-
         <NotificationMessage v-if="errors.base.length" type="danger" @close="errors.base = []">
           <p v-for="error in errors.base" :key="error">{{ error }}</p>
         </NotificationMessage>

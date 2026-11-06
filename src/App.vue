@@ -3,6 +3,7 @@ import { RouterView } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useProfileLocaleSync } from '@/composables/useProfileLocaleSync'
 import { watchEffect } from 'vue'
+import NotificationMessage from '@/components/NotificationMessage.vue'
 
 const { t } = useI18n()
 
@@ -21,4 +22,6 @@ watchEffect(() => {
       </transition>
     </RouterView>
   </main>
+
+  <NotificationMessage />
 </template>

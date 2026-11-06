@@ -61,8 +61,6 @@ async function onUpdateName() {
       <p class="panel-heading">{{ t('user.profile.title') }}</p>
       <div class="panel-block">
         <form @submit.prevent="onUpdateName">
-          <NotificationMessage />
-
           <NotificationMessage
             v-if="nameErrors.base.length"
             type="danger"
