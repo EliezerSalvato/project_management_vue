@@ -1,13 +1,35 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
-import { RouterLink, useRoute } from 'vue-router'
 import { computed, ref, watch } from 'vue'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
+import LocaleSwitcher from '@/components/LocaleSwitcher.vue'
 import logoUrl from '@/assets/logo.png'
-import searchIconUrl from '@/assets/icons/search-light.svg'
+import logoutIconUrl from '@/assets/icons/logout.svg'
 import SearchBar from '@/components/project/SearchBar.vue'
+import searchIconUrl from '@/assets/icons/search-light.svg'
+import userIconUrl from '@/assets/icons/user.svg'
 
 const { t } = useI18n()
 const route = useRoute()
+const router = useRouter()
+const authStore = useAuthStore()
+
+const loggingOut = ref(false)
+
+async function logout() {
+  loggingOut.value = true
+
+  try {
+    await authStore.logout()
+  } catch {
+    // logout() já limpa o estado local se a revogação falhar
+  } finally {
+    loggingOut.value = false
+  }
+
+  await router.push({ name: 'signIn' })
+}
 
 const searchable = computed(() => route.name === 'projects')
 
@@ -51,6 +73,32 @@ function closeSearch() {
       >
         <img :src="searchIconUrl" alt="" width="22" height="22" />
       </button>
+
+      <nav class="app-header-actions">
+        <LocaleSwitcher />
+
+        <template v-if="authStore.isAuthenticated">
+          <RouterLink
+            class="navbar-item"
+            :to="{ name: 'profile' }"
+            :aria-label="t('header.profile')"
+            :title="t('header.profile')"
+          >
+            <img :src="userIconUrl" alt="" width="22" height="22" />
+          </RouterLink>
+
+          <button
+            type="button"
+            class="navbar-item"
+            :aria-label="t('header.logout')"
+            :title="t('header.logout')"
+            :disabled="loggingOut"
+            @click="logout"
+          >
+            <img :src="logoutIconUrl" alt="" width="22" height="22" />
+          </button>
+        </template>
+      </nav>
     </header>
   </div>
 </template>

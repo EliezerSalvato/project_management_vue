@@ -60,13 +60,14 @@ onBeforeUnmount(() => {
       <span aria-hidden="true">{{ current?.flag }}</span>
     </button>
 
-    <div v-show="open" class="dropdown-menu" role="menu">
+    <div v-show="open" class="project-card-menu-list" role="menu">
       <button
         v-for="option in options"
         :key="option.code"
         type="button"
-        class="dropdown-item"
-        :class="{ 'dropdown-item-active': locale === option.code }"
+        class="project-card-menu-item"
+        :class="{ 'locale-option-active': locale === option.code }"
+        role="menuitem"
         @click="selectLocale(option.code)"
       >
         <span class="locale-flag" aria-hidden="true">{{ option.flag }}</span>

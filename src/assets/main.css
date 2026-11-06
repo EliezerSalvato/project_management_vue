@@ -340,34 +340,14 @@ input {
   line-height: 1;
 }
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  z-index: 40;
-  min-width: 14rem;
-  margin-top: 0.25rem;
-  padding: 0.25rem 0;
-  overflow: hidden;
-  border: 1px solid;
-  border-radius: var(--radius);
-  background: Canvas;
+/* Grow with the longest label so names never wrap. */
+.locale-switcher .project-card-menu-list {
+  width: max-content;
+  min-width: 240px;
+  white-space: nowrap;
 }
 
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 0;
-  background: transparent;
-  font-size: 0.875rem;
-  text-align: left;
-  cursor: pointer;
-}
-
-.dropdown-item-active {
+.locale-option-active {
   font-weight: 600;
 }
 
@@ -546,12 +526,33 @@ input {
 
 .app-header-search {
   position: absolute;
-  right: 62px;
+  left: 62px;
   display: inline-flex;
   padding: 4px;
   border: 0;
   background: transparent;
   cursor: pointer;
+}
+
+.app-header-actions {
+  position: absolute;
+  right: 62px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.app-header-actions .navbar-item {
+  display: inline-flex;
+  padding: 4px;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.app-header-actions .navbar-item:disabled {
+  cursor: default;
+  opacity: 0.5;
 }
 
 .search-bar {
@@ -1515,7 +1516,6 @@ input {
 .btn,
 .btn-pill,
 .close-button,
-.dropdown-item,
 .navbar-item,
 .app-header-search,
 .search-bar-recent-item,
@@ -1559,7 +1559,6 @@ input {
   box-shadow: 0 6px 8px rgb(0 0 0 / 30%);
 }
 
-.dropdown-item:hover,
 .search-bar-recent-item:hover,
 .project-card-menu-item:hover {
   background: var(--project-page-bg);

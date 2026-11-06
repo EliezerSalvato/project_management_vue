@@ -8,6 +8,8 @@ export default {
   },
   header: {
     search: 'Search',
+    logout: 'Log out',
+    profile: 'Edit profile',
   },
   buttons: {
     login: 'Login',
