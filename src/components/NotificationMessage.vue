@@ -33,9 +33,10 @@ function close() {
 </script>
 
 <template>
-  <div v-if="isLocal" class="notification" :class="typeClass">
+  <div v-if="isLocal" class="notification notification-card" :class="typeClass">
+    <span class="notification-icon" aria-hidden="true">{{ icon }}</span>
+    <div class="notification-text"><slot /></div>
     <button type="button" class="close-button" :aria-label="'close'" @click="close"></button>
-    <slot />
   </div>
 
   <div v-else class="notification-stack" aria-live="polite">
@@ -43,7 +44,7 @@ function close() {
       <div
         v-if="currentMessage"
         :key="messageKey"
-        class="notification notification-toast"
+        class="notification notification-card notification-toast"
         :class="typeClass"
         role="status"
       >
