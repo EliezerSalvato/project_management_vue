@@ -42,6 +42,7 @@ export default {
   },
   profile: {
     title: 'Profile',
+    personalInfo: 'Personal information',
     firstName: 'First name',
     lastName: 'Last name',
     success: 'Profile updated successfully',

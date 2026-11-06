@@ -448,13 +448,22 @@ input {
 }
 
 /* ---------- profile ---------- */
-.profile-stack {
+.profile-sections {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  width: 100%;
-  max-width: 56rem;
-  margin: 0 auto;
+}
+
+.profile-sections .project-form-panel {
+  margin-top: 0;
+}
+
+.profile-section-title {
+  margin: 0 0 24px;
+  color: var(--project-title);
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 26px;
 }
 
 /* ---------- not found ---------- */

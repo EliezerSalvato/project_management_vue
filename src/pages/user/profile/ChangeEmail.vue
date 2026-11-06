@@ -57,49 +57,48 @@ async function onUpdateEmail() {
 </script>
 
 <template>
-  <div class="panel">
-    <p class="panel-heading">{{ t('user.changeEmail.title') }}</p>
-    <div class="panel-block">
-      <form @submit.prevent="onUpdateEmail">
-        <NotificationMessage
-          v-if="emailErrors.base.length"
-          type="danger"
-          @close="emailErrors.base = []"
-        >
-          <p v-for="error in emailErrors.base" :key="error">{{ error }}</p>
-        </NotificationMessage>
+  <section class="project-form-panel">
+    <form class="project-form" novalidate @submit.prevent="onUpdateEmail">
+      <h2 class="profile-section-title">{{ t('user.changeEmail.title') }}</h2>
 
-        <InputText
-          v-model="emailForm.currentPassword"
-          name="currentPassword"
-          type="password"
-          :label="t('user.changeEmail.currentPassword')"
-          required
-          :errors="emailErrors.currentPassword"
-          autocomplete="current-password"
-        />
+      <NotificationMessage
+        v-if="emailErrors.base.length"
+        type="danger"
+        @close="emailErrors.base = []"
+      >
+        <p v-for="error in emailErrors.base" :key="error">{{ error }}</p>
+      </NotificationMessage>
 
-        <InputText
-          v-model="emailForm.newEmail"
-          name="email"
-          type="email"
-          :label="t('user.changeEmail.email')"
-          required
-          :errors="emailErrors.newEmail"
-          autocomplete="email"
-        />
+      <InputText
+        v-model="emailForm.currentPassword"
+        name="currentPassword"
+        type="password"
+        :label="t('user.changeEmail.currentPassword')"
+        required
+        required-text
+        :errors="emailErrors.currentPassword"
+        autocomplete="current-password"
+      />
 
-        <div class="form-actions">
-          <button
-            type="submit"
-            class="btn btn-primary"
-            :class="{ 'btn-loading': emailLoading }"
-            :disabled="emailLoading"
-          >
-            {{ t('buttons.save') }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+      <InputText
+        v-model="emailForm.newEmail"
+        name="email"
+        type="email"
+        :label="t('user.changeEmail.email')"
+        required
+        required-text
+        :errors="emailErrors.newEmail"
+        autocomplete="email"
+      />
+
+      <button
+        type="submit"
+        class="btn-pill project-form-submit"
+        :class="{ 'btn-loading': emailLoading }"
+        :disabled="emailLoading"
+      >
+        {{ t('buttons.save') }}
+      </button>
+    </form>
+  </section>
 </template>

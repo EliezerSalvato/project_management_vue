@@ -61,59 +61,59 @@ async function onUpdatePassword() {
 </script>
 
 <template>
-  <div class="panel">
-    <p class="panel-heading">{{ t('user.changePassword.title') }}</p>
-    <div class="panel-block">
-      <form @submit.prevent="onUpdatePassword">
-        <NotificationMessage
-          v-if="passwordErrors.base.length"
-          type="danger"
-          @close="passwordErrors.base = []"
-        >
-          <p v-for="error in passwordErrors.base" :key="error">{{ error }}</p>
-        </NotificationMessage>
+  <section class="project-form-panel">
+    <form class="project-form" novalidate @submit.prevent="onUpdatePassword">
+      <h2 class="profile-section-title">{{ t('user.changePassword.title') }}</h2>
 
-        <InputText
-          v-model="passwordForm.currentPassword"
-          name="currentPassword"
-          type="password"
-          :label="t('user.changePassword.currentPassword')"
-          required
-          :errors="passwordErrors.currentPassword"
-          autocomplete="current-password"
-        />
+      <NotificationMessage
+        v-if="passwordErrors.base.length"
+        type="danger"
+        @close="passwordErrors.base = []"
+      >
+        <p v-for="error in passwordErrors.base" :key="error">{{ error }}</p>
+      </NotificationMessage>
 
-        <InputText
-          v-model="passwordForm.password"
-          name="password"
-          type="password"
-          :label="t('user.changePassword.password')"
-          required
-          :errors="passwordErrors.password"
-          autocomplete="new-password"
-        />
+      <InputText
+        v-model="passwordForm.currentPassword"
+        name="currentPassword"
+        type="password"
+        :label="t('user.changePassword.currentPassword')"
+        required
+        required-text
+        :errors="passwordErrors.currentPassword"
+        autocomplete="current-password"
+      />
 
-        <InputText
-          v-model="passwordForm.passwordConfirmation"
-          name="passwordConfirmation"
-          type="password"
-          :label="t('user.changePassword.passwordConfirmation')"
-          required
-          :errors="passwordErrors.passwordConfirmation"
-          autocomplete="new-password"
-        />
+      <InputText
+        v-model="passwordForm.password"
+        name="password"
+        type="password"
+        :label="t('user.changePassword.password')"
+        required
+        required-text
+        :errors="passwordErrors.password"
+        autocomplete="new-password"
+      />
 
-        <div class="form-actions">
-          <button
-            type="submit"
-            class="btn btn-primary"
-            :class="{ 'btn-loading': passwordLoading }"
-            :disabled="passwordLoading"
-          >
-            {{ t('buttons.save') }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+      <InputText
+        v-model="passwordForm.passwordConfirmation"
+        name="passwordConfirmation"
+        type="password"
+        :label="t('user.changePassword.passwordConfirmation')"
+        required
+        required-text
+        :errors="passwordErrors.passwordConfirmation"
+        autocomplete="new-password"
+      />
+
+      <button
+        type="submit"
+        class="btn-pill project-form-submit"
+        :class="{ 'btn-loading': passwordLoading }"
+        :disabled="passwordLoading"
+      >
+        {{ t('buttons.save') }}
+      </button>
+    </form>
+  </section>
 </template>
