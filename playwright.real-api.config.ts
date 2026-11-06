@@ -12,6 +12,9 @@ const COMPOSE = 'docker compose -f e2e/backend/docker-compose.yml'
 export default defineConfig({
   testDir: './e2e/real-api',
   fullyParallel: true,
+  // The dockerized API is a single Rails process in development mode: more workers only queue
+  // requests on it (sign-ups alone took 20s) and tests time out instead of running faster.
+  workers: 3,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? 'github' : 'list',
