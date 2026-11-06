@@ -6,11 +6,18 @@ export default {
     description: 'The page you are looking for does not exist or may have been moved.',
     goHome: 'Go to home',
   },
+  header: {
+    search: 'Search',
+  },
   buttons: {
     login: 'Login',
     save: 'Save',
     signUp: 'Sign up',
     sendResetPasswordInstructions: 'Send me reset password instructions',
     changeMyPassword: 'Change my password',
+    cancel: 'Cancel',
+    confirm: 'Confirm',
+    retry: 'Try again',
+    back: 'Back',
   },
 }

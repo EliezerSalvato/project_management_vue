@@ -12,12 +12,14 @@ const props = withDefaults(
     errors: string[]
     placeholder?: string
     required?: boolean
+    requiredText?: boolean
     maxlength?: number
     type?: 'text' | 'email' | 'password'
     autocomplete?: string
   }>(),
   {
     required: false,
+    requiredText: false,
     maxlength: 250,
     type: 'text',
   },
@@ -28,7 +30,6 @@ const emit = defineEmits<{
 }>()
 
 const input = useTemplateRef<HTMLInputElement>('input')
-// `name` is not unique per page (e.g. two `currentPassword` fields on the profile).
 const id = useId()
 const errorId = `${id}-error`
 
@@ -49,7 +50,8 @@ defineExpose({ focus })
   <div class="form-field">
     <label v-if="label" class="form-label" :for="id">
       {{ label }}
-      <abbr v-if="required" :title="t('required')" aria-hidden="true">*</abbr>
+      <span v-if="required && requiredText" class="form-label-required">({{ t('required') }})</span>
+      <abbr v-else-if="required" :title="t('required')" aria-hidden="true">*</abbr>
     </label>
     <input
       :id="id"
