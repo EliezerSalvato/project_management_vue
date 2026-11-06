@@ -2,12 +2,16 @@ import { beforeEach, describe, expect, it } from 'vitest'
 import {
   blankValidator,
   confirmationValidator,
+  COVER_FILE_MAX_BYTES,
+  coverFileValidator,
+  dateValidator,
   emailValidator,
   formatValidator,
   isBlank,
   isValidEmail,
   maxLengthValidator,
   minLengthValidator,
+  minWordsValidator,
 } from '@/utils/validators'
 import i18n from '@/locales'
 
@@ -104,6 +108,130 @@ describe('formatValidator', () => {
 
   it('uses a custom error message', () => {
     expect(formatValidator(/^\d+$/, 'digits only')('x').errorMessage).toBe('digits only')
+  })
+})
+
+describe('minWordsValidator', () => {
+  const twoWords = minWordsValidator(2, 'Por favor, digite ao menos duas palavras')
+  const oneWord = minWordsValidator(1, 'Por favor, digite ao menos uma palavra')
+
+  it('rejects fewer words than the minimum after trimming', () => {
+    expect(twoWords('  Projeto  ')).toEqual({
+      isValid: false,
+      errorMessage: 'Por favor, digite ao menos duas palavras',
+    })
+    expect(twoWords('Projeto Alfa').isValid).toBe(true)
+  })
+
+  it('rejects blank values', () => {
+    expect(twoWords('').isValid).toBe(false)
+    expect(oneWord('   ')).toEqual({
+      isValid: false,
+      errorMessage: 'Por favor, digite ao menos uma palavra',
+    })
+    expect(oneWord(null).isValid).toBe(false)
+  })
+
+  it('accepts a single word when the minimum is 1', () => {
+    expect(oneWord('Acme').isValid).toBe(true)
+  })
+
+  it('trims and splits on Unicode whitespace', () => {
+    expect(twoWords('\u00a0Projeto\u00a0').isValid).toBe(false)
+    expect(oneWord('\u00a0\u3000').isValid).toBe(false)
+    expect(twoWords('Projeto\u00a0Alfa').isValid).toBe(true)
+    expect(twoWords('Projeto\u2003Alfa').isValid).toBe(true)
+  })
+
+  it('counts only words of at least minLength characters', () => {
+    const client = minWordsValidator(1, 'Por favor, digite ao menos uma palavra', { minLength: 2 })
+
+    expect(client('')).toEqual({
+      isValid: false,
+      errorMessage: 'Por favor, digite ao menos uma palavra',
+    })
+    expect(client(' a ').isValid).toBe(false)
+    expect(client('a b\u00a0c').isValid).toBe(false)
+    expect(client('ab').isValid).toBe(true)
+    expect(client('a Iridium').isValid).toBe(true)
+    expect(client('\u00a0ab\u3000').isValid).toBe(true)
+  })
+})
+
+describe('dateValidator', () => {
+  const message = 'Selecione uma data válida'
+  const today = '2026-11-05'
+
+  it('rejects empty, malformed and past dates', () => {
+    const validator = dateValidator({ notBefore: today }, message)
+
+    expect(validator('')).toEqual({ isValid: false, errorMessage: message })
+    expect(validator(null).isValid).toBe(false)
+    expect(validator('2026-02-30').isValid).toBe(false)
+    expect(validator('05/11/2026').isValid).toBe(false)
+    expect(validator('2026-11-04').isValid).toBe(false)
+  })
+
+  it('accepts today and later dates', () => {
+    const validator = dateValidator({ notBefore: today }, message)
+
+    expect(validator(today).isValid).toBe(true)
+    expect(validator('2027-01-01').isValid).toBe(true)
+  })
+
+  it('rejects a date before notBefore', () => {
+    const validator = dateValidator({ notBefore: '2026-12-10' }, message)
+
+    expect(validator('2026-12-09').isValid).toBe(false)
+    expect(validator('2026-12-10').isValid).toBe(true)
+  })
+
+  it('still validates the date format without a not-before rule', () => {
+    const validator = dateValidator({}, message)
+
+    expect(validator('2020-01-01').isValid).toBe(true)
+    expect(validator('').isValid).toBe(false)
+    expect(validator('2020-02-30').isValid).toBe(false)
+  })
+
+  it('skips the not-before rule when notBefore is missing or invalid', () => {
+    expect(dateValidator({}, message)('2020-01-01').isValid).toBe(true)
+    expect(dateValidator({ notBefore: '' }, message)('2020-01-01').isValid).toBe(true)
+  })
+})
+
+describe('coverFileValidator', () => {
+  function file(type: string, size: number) {
+    const value = new File(['x'], 'cover', { type })
+    Object.defineProperty(value, 'size', { value: size })
+
+    return value
+  }
+
+  it('accepts JPEG and PNG up to 5 MB', () => {
+    expect(coverFileValidator(file('image/jpeg', 1024)).isValid).toBe(true)
+    expect(coverFileValidator(file('image/png', COVER_FILE_MAX_BYTES)).isValid).toBe(true)
+  })
+
+  it('rejects other types and files over 5 MB', () => {
+    expect(coverFileValidator(file('image/gif', 1024))).toEqual({
+      isValid: false,
+      errorMessage: 'Choose a .jpg or .png image up to 5 MB',
+    })
+    expect(coverFileValidator(file('application/pdf', 1024)).isValid).toBe(false)
+    expect(coverFileValidator(file('image/png', 5 * 1024 * 1024 + 1)).isValid).toBe(false)
+  })
+
+  it('rejects a missing file', () => {
+    expect(coverFileValidator(null).isValid).toBe(false)
+  })
+
+  it('translates the message', () => {
+    i18n.global.locale.value = 'pt-BR'
+
+    expect(coverFileValidator(null).errorMessage).toBe(
+      'Selecione uma imagem .jpg ou .png de até 5 MB',
+    )
   })
 })
 
