@@ -6,6 +6,7 @@ import {
   maxLengthValidator,
   minLengthValidator,
 } from './validators'
+import { ApiError } from '@/api/client'
 import { toCamelKey } from '@/utils/case'
 import i18n from '@/locales'
 
@@ -14,6 +15,13 @@ export type FormFields = Record<string, unknown>
 export type ErrorField<T extends FormFields> = keyof T | 'base'
 
 export type FormErrors<T extends FormFields> = Record<ErrorField<T>, string[]>
+
+/** Message to show the user for any caught error: the API message, or a generic fallback. */
+export function errorMessage(error: unknown): string {
+  return error instanceof ApiError
+    ? error.message
+    : i18n.global.t('utils.errorsHandler.somethingWentWrong')
+}
 
 export function buildFormErrors<T extends FormFields>(form: T): FormErrors<T> {
   const fields = [...Object.keys(form), 'base']

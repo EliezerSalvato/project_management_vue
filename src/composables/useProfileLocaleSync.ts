@@ -1,6 +1,6 @@
 import type { AppLocale } from '@/locales/locale'
 import { storeToRefs } from 'pinia'
-import { ApiError } from '@/api/client'
+import { errorMessage } from '@/utils/errorsHandler'
 import { updateProfile } from '@/api/user'
 import { applyDocumentLocale, resolveLocale, setLocaleCookie } from '@/locales/locale'
 import { useAuthStore } from '@/stores/auth'
@@ -39,12 +39,7 @@ export async function syncProfileLocale(locale: AppLocale) {
       })
     }
   } catch (error) {
-    const message =
-      error instanceof ApiError
-        ? error.message
-        : i18n.global.t('utils.errorsHandler.somethingWentWrong')
-
-    notificationStore.setCurrentMessage(message, 'danger')
+    notificationStore.setCurrentMessage(errorMessage(error), 'danger')
   }
 }
 
