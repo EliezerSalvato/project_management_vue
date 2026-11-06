@@ -19,7 +19,11 @@ type MockResponse = {
 export type RecordedRequest = {
   method: string
   path: string
+  query: URLSearchParams
+  /** Parsed JSON body; `null` for multipart or other non-JSON bodies. */
   body: unknown
+  /** Body as sent, e.g. to assert multipart fields. */
+  rawBody: string | null
   authorization: string | undefined
 }
 
@@ -81,6 +85,12 @@ export function errorResponse(message: string, details: Record<string, string[]>
   return { status: 'error', message, details }
 }
 
+function parseJsonBody(rawBody: string | null, contentType: string | null) {
+  if (rawBody === null || !contentType?.includes('application/json')) return null
+
+  return JSON.parse(rawBody) as unknown
+}
+
 /** A promise the test resolves by hand, to hold a mocked response in flight. */
 export function deferred() {
   let resolve!: () => void
@@ -139,10 +149,14 @@ export class ApiMock {
         return
       }
 
+      const url = new URL(request.url())
+      const rawBody = request.postData()
       const recorded: RecordedRequest = {
         method: request.method(),
-        path: new URL(request.url()).pathname,
-        body: request.postDataJSON(),
+        path: url.pathname,
+        query: url.searchParams,
+        body: parseJsonBody(rawBody, await request.headerValue('content-type')),
+        rawBody,
         authorization: (await request.headerValue('authorization')) ?? undefined,
       }
 

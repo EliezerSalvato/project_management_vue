@@ -27,6 +27,8 @@ services:
     volumes:
       # Loads after config/initializers/rack_attack.rb (alphabetical order).
       - ./disable_rate_limit.rb:/app/config/initializers/zz_e2e_disable_rate_limit.rb:ro
+      # Loads after config/initializers/default_url_options.rb.
+      - ./api_url_options.rb:/app/config/initializers/zz_e2e_api_url_options.rb:ro
     depends_on:
       db:
         condition: service_healthy
