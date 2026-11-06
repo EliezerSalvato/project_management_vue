@@ -54,6 +54,10 @@ A API pagina por cursor (`after`/`next`), sem número de página, então a lista
 
 O termo e o texto são normalizados (NFD, sem diacríticos, minúsculos) antes da comparação, para que "acao" destaque "Ação", algo essencial para conteúdo em pt-BR.
 
+### Lupa de busca no lado esquerdo do cabeçalho
+
+As capturas mostram a lupa à direita, mas ela foi movida para o lado esquerdo para liberar o lado direito do cabeçalho para as outras opções (`.app-header-actions`), como o seletor de idioma, o acesso ao perfil e o logout, sem que elas disputem espaço com a busca.
+
 ## Qualidade de código
 
 ### ESLint

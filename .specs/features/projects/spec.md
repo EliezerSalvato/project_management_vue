@@ -78,7 +78,7 @@ list, sort, favorite, search with recent searches, create, edit and remove.
 9. IF the list request fails THEN the system SHALL show the API error message in the notification.
 10. WHEN a signed-out user opens any `/projects` route THEN the system SHALL redirect to sign-in with the route as `redirect`.
 11. WHEN a signed-in user opens `/` THEN the system SHALL redirect to `/projects`.
-12. WHILE a project page is shown the system SHALL show the header drawn in the captures: logo centered, search icon on the right on the list page, and no other controls.
+12. WHILE a project page is shown the system SHALL show the header drawn in the captures: logo centered, search icon on the left on the list page, and no other controls.
 13. WHEN the user clicks the header logo THEN the system SHALL navigate to `/projects`.
 
 **Independent Test**: Sign in with 0 projects → empty state; seed 25 projects → 20 cards, count "(25)", scroll to bottom → 25 cards and no further request.
