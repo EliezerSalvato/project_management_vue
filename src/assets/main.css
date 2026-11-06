@@ -382,6 +382,71 @@ input {
   gap: 0.25rem;
 }
 
+/* Icon drawn inside a login field, on the right edge. */
+.auth-input-group {
+  position: relative;
+}
+
+.auth-input-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  display: inline-flex;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.auth-input-group .form-input {
+  height: 40px;
+  padding-right: 2.5rem;
+}
+
+/* Login keeps its own layout and only takes the project colors. */
+.app-main:has(.auth-themed) {
+  background: var(--project-page-bg);
+}
+
+.auth-themed {
+  color: var(--project-ink);
+  font-family: 'Encode Sans Semi Expanded', sans-serif;
+}
+
+.auth-themed .auth-card {
+  border-color: var(--project-border);
+  background: #f7f6ff;
+}
+
+.auth-themed .title {
+  color: var(--project-title);
+}
+
+.auth-themed .form-input {
+  border-color: var(--project-text);
+  background: #fff;
+  color: var(--project-ink);
+}
+
+.auth-themed .form-input:focus {
+  border-color: var(--project-primary);
+  outline: none;
+}
+
+.auth-themed .form-input-error {
+  border-color: var(--project-error);
+}
+
+.auth-themed .form-help-error {
+  color: var(--project-error);
+}
+
+.auth-themed .form-label-required {
+  font-weight: 400;
+}
+
+.auth-themed .link {
+  color: var(--project-primary);
+}
+
 /* ---------- profile ---------- */
 .profile-stack {
   display: flex;

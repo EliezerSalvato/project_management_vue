@@ -6,7 +6,6 @@ import { useNotificationStore } from '@/stores/notification'
 import { useFormErrors } from '@/composables/useFormErrors'
 import { reactive, ref } from 'vue'
 import InputText from '@/components/inputs/InputText.vue'
-import NotificationMessage from '@/components/NotificationMessage.vue'
 import UserLinks from '@/components/user/UserLinks.vue'
 
 const { t } = useI18n()
@@ -34,6 +33,12 @@ async function onSubmit() {
     notificationStore.setCurrentMessage(response.message, 'success')
   } catch (error) {
     applyCatch(error)
+
+    // General errors go to the global toast (right side, 5s) instead of inside the card.
+    if (errors.value.base.length) {
+      notificationStore.setCurrentMessage(errors.value.base.join(' '), 'danger')
+      errors.value.base = []
+    }
   } finally {
     loading.value = false
   }
@@ -41,27 +46,24 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="auth-shell">
+  <div class="auth-shell auth-themed">
     <div class="auth-card">
       <h1 class="title">{{ t('user.forgotPassword.title') }}</h1>
 
-      <form @submit.prevent="onSubmit">
-        <NotificationMessage v-if="errors.base.length" type="danger" @close="errors.base = []">
-          <p v-for="error in errors.base" :key="error">{{ error }}</p>
-        </NotificationMessage>
-
+      <form class="project-form" @submit.prevent="onSubmit">
         <InputText
           v-model="form.email"
           name="email"
           :label="t('user.forgotPassword.email')"
           required
+          required-text
           :errors="errors.email"
           autocomplete="email"
         />
 
         <button
           type="submit"
-          class="btn btn-primary btn-block form-submit"
+          class="btn-pill project-form-submit"
           :class="{ 'btn-loading': loading }"
           :disabled="loading"
         >

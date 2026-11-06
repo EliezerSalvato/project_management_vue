@@ -7,7 +7,6 @@ import { useFormErrors } from '@/composables/useFormErrors'
 import { computed, reactive, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import InputText from '@/components/inputs/InputText.vue'
-import NotificationMessage from '@/components/NotificationMessage.vue'
 import UserLinks from '@/components/user/UserLinks.vue'
 
 const { t } = useI18n()
@@ -37,8 +36,22 @@ function validate(): boolean {
   )
 }
 
+// General and token errors have no field to sit under, so they go to the global toast.
+function showGeneralErrors() {
+  const messages = [...errors.value.base, ...errors.value.token]
+
+  if (!messages.length) return
+
+  notificationStore.setCurrentMessage(messages.join(' '), 'danger')
+  errors.value.base = []
+  errors.value.token = []
+}
+
 async function onSubmit() {
-  if (!validate()) return
+  if (!validate()) {
+    showGeneralErrors()
+    return
+  }
 
   loading.value = true
 
@@ -53,6 +66,7 @@ async function onSubmit() {
     notificationStore.setCurrentMessage(response.message, 'success')
   } catch (error) {
     applyCatch(error)
+    showGeneralErrors()
   } finally {
     loading.value = false
   }
@@ -60,25 +74,18 @@ async function onSubmit() {
 </script>
 
 <template>
-  <div class="auth-shell">
+  <div class="auth-shell auth-themed">
     <div class="auth-card">
       <h1 class="title">{{ t('user.resetPassword.title') }}</h1>
 
-      <form @submit.prevent="onSubmit">
-        <NotificationMessage v-if="errors.base.length" type="danger" @close="errors.base = []">
-          <p v-for="error in errors.base" :key="error">{{ error }}</p>
-        </NotificationMessage>
-
-        <NotificationMessage v-if="errors.token.length" type="danger" @close="errors.token = []">
-          <p v-for="error in errors.token" :key="error">{{ error }}</p>
-        </NotificationMessage>
-
+      <form class="project-form" @submit.prevent="onSubmit">
         <InputText
           v-model="form.password"
           name="password"
           type="password"
           :label="t('user.resetPassword.password')"
           required
+          required-text
           :errors="errors.password"
           autocomplete="new-password"
         />
@@ -89,13 +96,14 @@ async function onSubmit() {
           type="password"
           :label="t('user.resetPassword.passwordConfirmation')"
           required
+          required-text
           :errors="errors.passwordConfirmation"
           autocomplete="new-password"
         />
 
         <button
           type="submit"
-          class="btn btn-primary btn-block form-submit"
+          class="btn-pill project-form-submit form-submit"
           :class="{ 'btn-loading': loading }"
           :disabled="loading"
         >
