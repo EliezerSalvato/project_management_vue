@@ -2,6 +2,7 @@
 import type { ProjectForm, ProjectPayload } from '@/types/project'
 import { useI18n } from 'vue-i18n'
 import { useFormErrors } from '@/composables/useFormErrors'
+import { useNotificationStore } from '@/stores/notification'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
 import { parseIsoDate, todayIso } from '@/utils/date'
 import { coverFileValidator, dateValidator, minWordsValidator } from '@/utils/validators'
@@ -10,7 +11,6 @@ import calendarDayIconUrl from '@/assets/icons/calendar-day-light.svg'
 import CoverUpload from '@/components/inputs/CoverUpload.vue'
 import InputDate from '@/components/inputs/InputDate.vue'
 import InputText from '@/components/inputs/InputText.vue'
-import NotificationMessage from '@/components/NotificationMessage.vue'
 
 type Field = Exclude<keyof ProjectForm, 'coverImage'>
 
@@ -40,7 +40,19 @@ const touched = reactive<Record<Field, boolean>>({
   endDate: false,
 })
 
-const { errors: apiErrors, applyCatch, createHandler, resetErrors } = useFormErrors(form)
+const notificationStore = useNotificationStore()
+const { errors: apiErrors, applyCatch: applyFormCatch, createHandler, resetErrors } =
+  useFormErrors(form)
+
+// General errors go to the global toast (right side, 5s) instead of inside the form.
+function applyCatch(error: unknown) {
+  applyFormCatch(error)
+
+  if (apiErrors.value.base.length) {
+    notificationStore.setCurrentMessage(apiErrors.value.base.join(' '), 'danger')
+    apiErrors.value.base = []
+  }
+}
 
 const today = todayIso()
 
@@ -130,10 +142,6 @@ defineExpose({ applyCatch })
 
 <template>
   <form class="project-form" novalidate @submit.prevent="onSubmit">
-    <NotificationMessage v-if="apiErrors.base.length" type="danger" @close="apiErrors.base = []">
-      <p v-for="error in apiErrors.base" :key="error">{{ error }}</p>
-    </NotificationMessage>
-
     <InputText
       ref="nameInput"
       v-model="form.name"
