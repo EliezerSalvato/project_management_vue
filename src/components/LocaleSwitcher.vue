@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import type { AppLocale } from '@/locales/locale'
-import { applyAppLocale, syncProfileLocale } from '@/composables/useProfileLocaleSync'
+import { useClickOutside } from '@/composables/useClickOutside'
 import { useI18n } from 'vue-i18n'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { applyAppLocale, syncProfileLocale } from '@/composables/useProfileLocaleSync'
+import { computed, ref, useTemplateRef } from 'vue'
 
 const { locale } = useI18n()
 const open = ref(false)
-const root = ref<HTMLElement | null>(null)
+const root = useTemplateRef<HTMLElement>('root')
 
 const options: { code: AppLocale; flag: string; label: string }[] = [
   { code: 'en', flag: '🇺🇸', label: 'English (United States)' },
@@ -32,19 +33,7 @@ function selectLocale(next: AppLocale) {
   close()
 }
 
-function onDocumentPointerDown(event: PointerEvent) {
-  if (!root.value?.contains(event.target as Node)) {
-    close()
-  }
-}
-
-onMounted(() => {
-  document.addEventListener('pointerdown', onDocumentPointerDown)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('pointerdown', onDocumentPointerDown)
-})
+useClickOutside(root, close, open)
 </script>
 
 <template>
