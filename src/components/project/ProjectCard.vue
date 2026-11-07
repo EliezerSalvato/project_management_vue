@@ -33,6 +33,7 @@ const emit = defineEmits<{
 const { t, locale } = useI18n()
 
 const menu = useTemplateRef<HTMLElement>('menu')
+const menuTrigger = useTemplateRef<HTMLButtonElement>('menuTrigger')
 
 useClickOutside(menu, () => emit('closeMenu'), toRef(props, 'menuOpen'))
 
@@ -46,6 +47,8 @@ function formatDate(value: string) {
 }
 
 function onRemove() {
+  // The menu item unmounts; the confirm dialog returns focus to whatever had it before opening.
+  menuTrigger.value?.focus()
   emit('closeMenu')
   emit('remove', props.project)
 }
@@ -88,6 +91,7 @@ function onRemove() {
 
         <div ref="menu" class="project-card-menu">
           <button
+            ref="menuTrigger"
             type="button"
             class="project-card-menu-trigger"
             :aria-label="t('project.card.options')"
