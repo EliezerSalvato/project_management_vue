@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import type { PasswordForm } from '@/types/user'
 import { updatePassword } from '@/api/user'
-import { useAuthStore } from '@/stores/auth'
 import { useI18n } from 'vue-i18n'
-import { useNotificationStore } from '@/stores/notification'
-import { useRouter } from 'vue-router'
+import { useEndSession } from '@/composables/useEndSession'
 import { useFormErrors } from '@/composables/useFormErrors'
 import { reactive, ref } from 'vue'
 import InputText from '@/components/inputs/InputText.vue'
 import NotificationMessage from '@/components/NotificationMessage.vue'
 
 const { t } = useI18n()
-const router = useRouter()
-const authStore = useAuthStore()
-const notificationStore = useNotificationStore()
+const endSessionAndRedirect = useEndSession()
 const passwordLoading = ref(false)
 
 const passwordForm = reactive<PasswordForm>({
@@ -31,17 +27,6 @@ function validatePassword(): boolean {
       .checkMinLength(['password'], 8)
       .checkConfirmation('password', 'passwordConfirmation', t('user.changePassword.password')),
   )
-}
-
-async function endSessionAndRedirect(notice: string) {
-  try {
-    await authStore.logout()
-  } catch {
-    // logout() já limpa o estado local se a revogação falhar
-  }
-
-  await router.push({ name: 'signIn' })
-  notificationStore.setCurrentMessage(notice, 'success')
 }
 
 async function onUpdatePassword() {
