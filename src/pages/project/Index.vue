@@ -89,6 +89,13 @@ void list.loadMore()
     <div class="project-page-content">
       <Loading v-if="firstLoad" />
 
+      <div v-else-if="error && !items.length" class="project-load-error">
+        <p>{{ t('project.list.loadError') }}</p>
+        <button type="button" class="btn-pill btn-pill-outline" @click="list.loadMore">
+          {{ t('buttons.retry') }}
+        </button>
+      </div>
+
       <section v-else-if="isEmpty" class="project-empty">
         <h1 class="project-empty-title">{{ t('project.list.emptyTitle') }}</h1>
         <p class="project-empty-description">{{ t('project.list.emptyDescription') }}</p>
@@ -134,7 +141,8 @@ void list.loadMore()
           v-else
           :projects="items"
           :loading="loading"
-          :has-more="hasMore && !error"
+          :has-more="hasMore"
+        :failed="!!error"
           :pending-favorites="favoritesInFlight"
           @load-more="list.loadMore"
           @toggle-favorite="toggleFavorite"

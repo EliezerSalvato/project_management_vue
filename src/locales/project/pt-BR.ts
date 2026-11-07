@@ -3,6 +3,7 @@ export default {
     title: 'Projetos',
     favoritesOnly: 'Apenas Favoritos',
     sortLabel: 'Ordenar projetos',
+    loadError: 'Não foi possível carregar os projetos.',
     newProject: 'Novo projeto',
     emptyTitle: 'Nenhum projeto',
     emptyDescription: 'Clique no botão abaixo para criar o primeiro e gerenciá-lo.',

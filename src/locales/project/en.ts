@@ -3,6 +3,7 @@ export default {
     title: 'Projects',
     favoritesOnly: 'Favorites only',
     sortLabel: 'Sort projects',
+    loadError: 'Could not load the projects.',
     newProject: 'New project',
     emptyTitle: 'No projects',
     emptyDescription: 'Click the button below to create your first one and manage it.',

@@ -63,6 +63,13 @@ search()
 
       <Loading v-if="firstLoad" />
 
+      <div v-else-if="error && !items.length" class="project-load-error">
+        <p>{{ t('project.list.loadError') }}</p>
+        <button type="button" class="btn-pill btn-pill-outline" @click="list.loadMore">
+          {{ t('buttons.retry') }}
+        </button>
+      </div>
+
       <p v-else-if="count === 0" class="project-search-empty">
         {{ t('project.search.noResults') }}
       </p>
@@ -71,7 +78,8 @@ search()
         v-else-if="isSearchable"
         :projects="items"
         :loading="loading"
-        :has-more="hasMore && !error"
+        :has-more="hasMore"
+        :failed="!!error"
         :pending-favorites="favoritesInFlight"
         :highlight="term"
         @load-more="list.loadMore"
