@@ -565,7 +565,7 @@ T27
 
 ### T24: Add the cover upload field
 
-**What**: `CoverUpload`: drop zone, "Selecionar" (accept jpg/png), preview, file check error, trash clears a picked file, trash on saved cover does nothing (AD-002).
+**What**: `CoverUpload`: drop zone, "Selecionar" (accept jpg/png), preview, file check error, trash clears a picked file, trash on saved cover removes it on save (AD-002 superseded).
 **Where**: `src/components/inputs/CoverUpload.vue` (+ `ProjectForm.vue`, `main.css`)
 **Depends on**: T23
 **Reuses**: `coverFileValidator`, `Vector.png`, `trash.svg`
@@ -802,7 +802,7 @@ Proof: browser captures/edit-project.running.png
 **C43** - A 404 shows the NotFound page (PROJ-09, AC 5)
 Proof: run e2e | ✓ Edit project › shows the not found page for a missing project
 
-**C44** - The trash over a saved cover changes nothing (PROJ-09, AC 6)
+**C44** - The trash over a saved cover removes it on save (PROJ-09, AC 6)
 Proof: run e2e | ✓ Edit project › trash on a saved cover does nothing
 
 **C45** - An unchanged past date is accepted, a date changed to the past shows "Selecione uma data válida" (PROJ-09, AC 7)

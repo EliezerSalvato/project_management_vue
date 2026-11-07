@@ -19,7 +19,6 @@ list, sort, favorite, search with recent searches, create, edit and remove.
 | Feature                              | Reason                                                                   |
 | ------------------------------------ | ------------------------------------------------------------------------ |
 | Filtering the list by favorites      | API has no favorite filter; the toggle stays without action (AD-001)     |
-| Removing a saved cover image         | API cannot remove a cover; the trash icon stays without action (AD-002)  |
 | Profile / logout links in the header | User chose to follow the capture: header holds only logo and search      |
 | Project detail page                  | No capture; the API `show` is used only to fill the edit form            |
 | Changes to the Rails API             | Both missing capabilities will be added to the API later by the user     |
@@ -32,7 +31,7 @@ list, sort, favorite, search with recent searches, create, edit and remove.
 | Assumption / decision                                       | Chosen default                                                                                                                                                                            | Rationale                                                                                                              | Confirmed? |
 | ----------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- | ---------- |
 | Favorites toggle                                            | Rendered as in `projects-list.png`, off, and clicking it changes nothing                                                                                                                  | user: "deixe sem ação, eu vou implementar na api depois" (AD-001)                                                      | y          |
-| Cover trash icon (edit, saved cover)                        | Rendered, clicking it changes nothing                                                                                                                                                     | user: "deixe o icone sem fazer nada, depois eu vou implementar na api" (AD-002)                                        | y          |
+| Cover trash icon (edit, saved cover)                        | Hides the saved cover and shows the drop zone; the next save sends `remove_cover_image=true`                                                                                              | API now removes a cover (AD-002 superseded)                                                                            | n          |
 | More than 20 projects                                       | Infinite scroll: next page loads when the end of the grid comes into view                                                                                                                 | user: "Scroll infinito" (AD-003)                                                                                       | y          |
 | Header content                                              | Logo + search icon only, as captured                                                                                                                                                      | user: "Seguir a tela (Recommended)"                                                                                    | y          |
 | Trash icon on a cover picked in this form but not saved yet | Clears the picked file and shows the "Selecionar" drop zone again                                                                                                                         | Without it a wrong pick can't be undone; no API involved, so AD-002 does not apply                                     | n          |
@@ -162,7 +161,7 @@ list, sort, favorite, search with recent searches, create, edit and remove.
 3. WHEN the user clicks "Editar" THEN the system SHALL navigate to `/projects/:id/edit`.
 4. WHEN `/projects/:id/edit` opens THEN the system SHALL load `GET /api/v1/projects/:id` and show the form in `.specs/features/projects/captures/edit-project.png` filled with the project's name, client, dates and cover.
 5. IF the project is not found (404) THEN the system SHALL show the existing NotFound page.
-6. WHERE the project has a saved cover the system SHALL show it with the trash icon, and clicking the icon SHALL change nothing (AD-002).
+6. WHERE the project has a saved cover the system SHALL show it with the trash icon, and clicking the icon SHALL hide it, show the drop zone and, on save without a new file, send `remove_cover_image=true` (AD-002 superseded).
 7. The system SHALL apply the create-form rules (P1 Create, criteria 2-11) to the edit form, except that "not before today" applies only to a date changed from its loaded value.
 8. WHEN the user submits a valid form THEN the system SHALL send `PATCH /api/v1/projects/:id` as multipart with the fields and, only if a new file was picked, `cover_image`, then navigate to `/projects` and show the API success message.
 9. IF the API answers 422 THEN the system SHALL show each message from `details` under its field and keep the user's input.
@@ -272,7 +271,6 @@ list, sort, favorite, search with recent searches, create, edit and remove.
 | ----------------------------------------------------------------------- | ------------------------------------------ | ---------- |
 | `projects-list-favorites.png`: toggle on, only favorite projects listed | Toggle stays off; clicking it does nothing | y - AD-001 |
 | `new-project-validations.png`: "Por favor, digite ao menos uma palavra" under client "Iridium" | No error for "Iridium"; the error shows only for a blank client | y - AD-004 |
-| `edit-project.png`: trash icon over the saved cover (implied remove)    | Icon shown; clicking it does nothing       | y - AD-002 |
 
 ## Sources
 

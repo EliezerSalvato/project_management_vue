@@ -11,14 +11,14 @@
 - **Date**: 2026-11-05
 - **Status**: superseded 2026-11-06 - the API now accepts `favorite=true` on `GET /api/v1/projects`; the toggle filters the list (state in the URL as `?favorite=true`).
 
-### AD-002 (active)
+### AD-002 (superseded)
 
 - **Decision**: The trash icon over a saved cover image on the edit page has no action until the API supports removing a cover.
 - **Reason**: `Project::Update` can replace a cover but never remove one. Asked: "O que a lixeira faz?" - user: "deixe o icone sem fazer nada, depois eu vou implementar na api".
 - **Trade-off**: A saved cover can be replaced but not removed.
 - **Scope**: projects feature - edit page
 - **Date**: 2026-11-05
-- **Status**: active
+- **Status**: superseded 2026-11-07 - the API now accepts `remove_cover_image=true` on `PATCH /api/v1/projects/:id`; the trash over a saved cover hides it and the next save sends the flag.
 
 ### AD-003 (active)
 

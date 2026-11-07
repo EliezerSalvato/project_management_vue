@@ -67,7 +67,7 @@
 | C42 | `run e2e / ✓ Edit project › loads the project into the form` | pass |
 | C42 | `browser captures/edit-project.running.png` | pass |
 | C43 | `run e2e / ✓ Edit project › shows the not found page for a missing project` | pass |
-| C44 | `run e2e / ✓ Edit project › trash on a saved cover does nothing` | pass |
+| C44 | `run e2e / ✓ Edit project › trash on a saved cover removes it on save` | pass |
 | C45 | `run e2e / ✓ Edit project › accepts an unchanged past date and rejects a changed one` | pass |
 | C45 | `run unit / ✓ dateValidator > skips the not-before rule when check is false` | pass |
 | C46 | `run e2e / ✓ Edit project › updates with PATCH multipart and returns to the list with the message` | pass |

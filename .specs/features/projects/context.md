@@ -27,7 +27,7 @@ API changes.
 
 ### Cover removal on edit
 
-- Trash icon rendered, no action on a saved cover. User: "deixe o icone sem fazer nada, depois eu vou implementar na api" (AD-002).
+- Trash icon removes a saved cover: hidden at once, `remove_cover_image=true` sent on save (AD-002 superseded 2026-11-07, API now supports it).
 
 ### Header
 

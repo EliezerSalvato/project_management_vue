@@ -53,7 +53,7 @@ The edit form accepts an end date before the start date when only the start was 
 | C41 | `cardMenu.spec.ts` `Editar navigates to the edit page` | yes |
 | C42 | `editProject.spec.ts` `loads the project into the form` | yes |
 | C43 | `editProject.spec.ts` `shows the not found page for a missing project` | yes |
-| C44 | `editProject.spec.ts` `trash on a saved cover does nothing` | yes |
+| C44 | `editProject.spec.ts` `trash on a saved cover removes it on save` | yes |
 | C45 | `editProject.spec.ts` `accepts an unchanged past date and rejects a changed one`; `validators.spec.ts` `skips the not-before rule when check is false` | no: covers the start date only. AC 7 brings criteria 2-11 to edit, and no test exercises the edit end date. Moving the start past an unchanged end passes (see Findings) |
 | C46 | `editProject.spec.ts` `updates with PATCH multipart and returns to the list with the message`; `project.spec.ts` `leaves cover_image out when no file was picked` | yes: the unit test also asserts the picked-file case |
 | C47 | `editProject.spec.ts` `shows API validation errors under their fields` | yes |

@@ -168,7 +168,7 @@ flowchart LR
 | `SelectInput`            | `src/components/inputs/SelectInput.vue`     | Custom dropdown drawn in `projects-select-order.png`; `v-model`, `options`                                                           |
 | `ToggleSwitch`           | `src/components/inputs/ToggleSwitch.vue`    | Switch + label; `disabled`-free, emits nothing when `inert` (AD-001)                                                                 |
 | `InputDate`              | `src/components/inputs/InputDate.vue`       | `type="date"` with the calendar icon and `(Obrigatório)` label                                                                       |
-| `CoverUpload`            | `src/components/inputs/CoverUpload.vue`     | Drop zone + "Selecionar" / preview + trash; emits `select(file)` and `clear`; trash on a saved cover does nothing (AD-002)           |
+| `CoverUpload`            | `src/components/inputs/CoverUpload.vue`     | Drop zone + "Selecionar" / preview + trash; emits `select(file)` and `clear`; trash on a saved cover removes it on save                 |
 | `ModalConfirm`           | `src/components/ModalConfirm.vue`           | Generic confirm modal (icon, title, message, highlighted name, Cancelar/Confirmar, `loading`) - the `ModalDelete` AGENTS.md asks for |
 | `InfiniteScrollSentinel` | `src/components/InfiniteScrollSentinel.vue` | `IntersectionObserver` on an empty div; emits `visible`                                                                              |
 | `ProjectCard`            | `src/components/project/ProjectCard.vue`    | Cover/placeholder, star, "..." menu (Editar/Remover), name (with highlight term), client, dates                                      |
