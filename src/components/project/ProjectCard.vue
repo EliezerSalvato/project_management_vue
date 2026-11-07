@@ -48,7 +48,8 @@ function formatDate(value: string) {
 
 function onRemove() {
   // The menu item unmounts; the confirm dialog returns focus to whatever had it before opening.
-  menuTrigger.value?.focus()
+  // preventScroll: scrolling to the trigger can reveal the sentinel and load the next page.
+  menuTrigger.value?.focus({ preventScroll: true })
   emit('closeMenu')
   emit('remove', props.project)
 }
