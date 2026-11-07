@@ -23,7 +23,7 @@ async function logout() {
   try {
     await authStore.logout()
   } catch {
-    // logout() já limpa o estado local se a revogação falhar
+    // logout() already clears the local state when revoking fails
   } finally {
     loggingOut.value = false
   }
