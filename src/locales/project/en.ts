@@ -54,6 +54,7 @@ export default {
       twoWords: 'Please type at least two words',
       oneWord: 'Please type at least one word',
       date: 'Choose a valid date',
+      beforeToday: "The date can't be before today",
     },
   },
 }

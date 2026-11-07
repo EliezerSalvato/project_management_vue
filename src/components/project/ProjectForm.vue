@@ -63,20 +63,34 @@ function isChanged(field: 'startDate' | 'endDate') {
 
 const validation = computed(() => {
   const dateMessage = t('project.form.errors.date')
+  const beforeTodayMessage = t('project.form.errors.beforeToday')
 
   // Untouched saved dates may already be in the past; only edited dates must not be.
   const minStartDate = isChanged('startDate') ? today : undefined
 
   // The end date never precedes a valid start date, and an edited end date can't be in the past.
   // `YYYY-MM-DD` strings compare chronologically, so `>` picks the later date.
-  let minEndDate = parseIsoDate(form.startDate) ? form.startDate : undefined
-  if (isChanged('endDate') && (!minEndDate || today > minEndDate)) minEndDate = today
+  const startDate = parseIsoDate(form.startDate) ? form.startDate : undefined
+  const endNotBeforeToday = isChanged('endDate') && (!startDate || today > startDate)
+  const minEndDate = endNotBeforeToday ? today : startDate
 
   return createHandler()
     .check(['name'], minWordsValidator(2, t('project.form.errors.twoWords')))
     .check(['clientName'], minWordsValidator(1, t('project.form.errors.oneWord')))
-    .check(['startDate'], dateValidator({ notBefore: minStartDate }, dateMessage))
-    .check(['endDate'], dateValidator({ notBefore: minEndDate }, dateMessage))
+    .check(
+      ['startDate'],
+      dateValidator({ notBefore: minStartDate, notBeforeMessage: beforeTodayMessage }, dateMessage),
+    )
+    .check(
+      ['endDate'],
+      dateValidator(
+        {
+          notBefore: minEndDate,
+          notBeforeMessage: endNotBeforeToday ? beforeTodayMessage : dateMessage,
+        },
+        dateMessage,
+      ),
+    )
 })
 
 function fieldErrors(field: Field) {

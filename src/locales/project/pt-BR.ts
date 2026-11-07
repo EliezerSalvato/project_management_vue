@@ -54,6 +54,7 @@ export default {
       twoWords: 'Por favor, digite ao menos duas palavras',
       oneWord: 'Por favor, digite ao menos uma palavra',
       date: 'Selecione uma data válida',
+      beforeToday: 'A data não pode ser anterior a hoje',
     },
   },
 }
