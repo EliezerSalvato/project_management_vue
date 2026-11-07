@@ -37,7 +37,7 @@ let sessionRestorePromise: Promise<void> | null = null
 function restoreSession() {
   const authStore = useAuthStore()
 
-  if (authStore.isAuthenticated) {
+  if (authStore.isAuthenticated || authStore.sessionChecked) {
     return Promise.resolve()
   }
 
@@ -46,6 +46,7 @@ function restoreSession() {
       .refreshToken()
       .catch(() => {})
       .finally(() => {
+        authStore.markSessionChecked()
         sessionRestorePromise = null
       })
   }

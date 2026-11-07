@@ -20,6 +20,9 @@ function writeRememberMe(value: boolean) {
 export const useAuthStore = defineStore('auth', () => {
   const token = ref<string | null>(null)
   const rememberMe = ref(readRememberMe())
+  // Set after the first restore attempt, so a guest (or a user who just logged out)
+  // does not trigger a refresh on every navigation.
+  const sessionChecked = ref(false)
 
   const isAuthenticated = computed(() => !!token.value)
 
@@ -30,6 +33,10 @@ export const useAuthStore = defineStore('auth', () => {
   function setRememberMe(value: boolean) {
     rememberMe.value = value
     writeRememberMe(value)
+  }
+
+  function markSessionChecked() {
+    sessionChecked.value = true
   }
 
   function clearSession() {
@@ -56,7 +63,9 @@ export const useAuthStore = defineStore('auth', () => {
     token,
     rememberMe,
     isAuthenticated,
+    sessionChecked,
     setToken,
+    markSessionChecked,
     setRememberMe,
     clearSession,
     refreshToken,

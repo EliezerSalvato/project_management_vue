@@ -37,6 +37,8 @@ beforeEach(async () => {
   setActivePinia(createPinia())
   refreshFails()
   await router.push('/__reset')
+  // A fresh store, so each test starts before the one-time session restore.
+  setActivePinia(createPinia())
   vi.mocked(refreshSession).mockClear()
 })
 
