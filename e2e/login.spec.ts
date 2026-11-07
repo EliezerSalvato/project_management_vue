@@ -79,7 +79,7 @@ test.describe('Login', () => {
     )
     await expect(page).toHaveURL('/users/sign-in')
 
-    await page.locator('.notification-danger').getByRole('button', { name: 'close' }).click()
+    await page.locator('.notification-danger').getByRole('button', { name: 'Close' }).click()
     await expect(page.locator('.notification')).toHaveCount(0)
   })
 

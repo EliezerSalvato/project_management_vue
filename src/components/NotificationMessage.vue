@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { NotificationType } from '@/stores/notification'
 import { storeToRefs } from 'pinia'
+import { useI18n } from 'vue-i18n'
 import { useNotificationStore } from '@/stores/notification'
 import { computed, useSlots } from 'vue'
 
@@ -12,6 +13,7 @@ const emit = defineEmits<{
   close: []
 }>()
 
+const { t } = useI18n()
 const slots = useSlots()
 const notificationStore = useNotificationStore()
 const { currentMessage, currentMessageType, messageKey } = storeToRefs(notificationStore)
@@ -36,7 +38,12 @@ function close() {
   <div v-if="isLocal" class="notification notification-card" :class="typeClass">
     <span class="notification-icon" aria-hidden="true">{{ icon }}</span>
     <div class="notification-text"><slot /></div>
-    <button type="button" class="close-button" :aria-label="'close'" @click="close"></button>
+    <button
+      type="button"
+      class="close-button"
+      :aria-label="t('buttons.close')"
+      @click="close"
+    ></button>
   </div>
 
   <div v-else class="notification-stack" aria-live="polite">
@@ -50,7 +57,12 @@ function close() {
       >
         <span class="notification-icon" aria-hidden="true">{{ icon }}</span>
         <p class="notification-text">{{ currentMessage }}</p>
-        <button type="button" class="close-button" :aria-label="'close'" @click="close"></button>
+        <button
+          type="button"
+          class="close-button"
+          :aria-label="t('buttons.close')"
+          @click="close"
+        ></button>
         <span class="notification-progress" @animationend="close"></span>
       </div>
     </Transition>

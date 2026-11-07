@@ -21,5 +21,6 @@ export default {
     confirm: 'Confirm',
     retry: 'Try again',
     back: 'Back',
+    close: 'Close',
   },
 }

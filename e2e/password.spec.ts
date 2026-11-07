@@ -40,7 +40,7 @@ test.describe('Forgot password', () => {
     )
     expect(api.lastBodyOf('POST', RESETS_PATH)).toEqual({ email: 'ada@example.com' })
 
-    await page.locator('.notification-success').getByRole('button', { name: 'close' }).click()
+    await page.locator('.notification-success').getByRole('button', { name: 'Close' }).click()
     await expect(page.locator('.notification')).toHaveCount(0)
   })
 
