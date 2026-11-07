@@ -28,13 +28,15 @@ test.describe('Projects list', () => {
     expect(api.requestsTo('GET', PROJECTS_PATH)[0]?.query.has('after')).toBe(false)
   })
 
-  test('shows the API error when the list fails', async ({ page, api }) => {
+  test('shows the generic error when the list fails', async ({ page, api }) => {
     api.signIn(ptBrUser)
     api.on('GET', PROJECTS_PATH, { status: 500, body: errorResponse('Erro ao listar projetos') })
 
     await page.goto('/projects')
 
-    await expect(page.locator('.notification-danger')).toContainText('Erro ao listar projetos')
+    await expect(page.locator('.notification-danger')).toContainText(
+      'Algo deu errado. Por favor, tente novamente.',
+    )
   })
 
   test('redirects a signed-out user from every projects route to sign-in', async ({ page }) => {

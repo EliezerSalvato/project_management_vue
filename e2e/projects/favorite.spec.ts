@@ -69,7 +69,7 @@ test.describe('Project favorite', () => {
     await star(page, 'Projeto 01').click()
 
     await expect(page.locator('.notification-danger')).toContainText(
-      'Não foi possível favoritar o projeto',
+      'Algo deu errado. Por favor, tente novamente.',
     )
     await expectStar(page, 'Projeto 01', false)
   })

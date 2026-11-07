@@ -133,7 +133,7 @@ test.describe('Remove project', () => {
 
     await expect(modal).toHaveCount(0)
     await expect(page.locator('.notification-danger')).toContainText(
-      'Não foi possível remover o projeto.',
+      'Algo deu errado. Por favor, tente novamente.',
     )
     await expect(card(page, 'Projeto 01')).toBeVisible()
     await expect(page.getByRole('heading', { level: 1 })).toHaveText('Projetos (2)')
