@@ -33,6 +33,10 @@ function isUnauthorizedError(status: number) {
   return status === 401
 }
 
+function isServerError(status: number) {
+  return status >= 500
+}
+
 function fallbackErrorMessage(status: number) {
   if (status === 429) return i18n.global.t('utils.errorsHandler.tooManyRequests')
 
@@ -111,9 +115,11 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions = {
       await clearSessionAndRedirect()
     }
 
+    // Server errors (5xx) may carry internal exception text, so the user sees the generic message.
+    const apiMessage = isServerError(response.status) ? undefined : data?.message
     const errorBody: ApiErrorBody = {
       status: 'error',
-      message: data?.message ?? fallbackErrorMessage(response.status),
+      message: apiMessage ?? fallbackErrorMessage(response.status),
       details: data?.details ?? {},
     }
 
