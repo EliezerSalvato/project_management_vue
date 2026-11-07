@@ -21,6 +21,7 @@ test.use({ appLocale: 'pt-BR' })
 const TWO_WORDS = 'Por favor, digite ao menos duas palavras'
 const ONE_WORD = 'Por favor, digite ao menos uma palavra'
 const INVALID_DATE = 'Selecione uma data válida'
+const BEFORE_TODAY = 'A data não pode ser anterior a hoje'
 const INVALID_COVER = 'Selecione uma imagem .jpg ou .png de até 5 MB'
 
 function saveButton(page: Page) {
@@ -92,7 +93,7 @@ test.describe('New project', () => {
     await expect(fieldError(page, 'startDate')).toHaveText(INVALID_DATE)
 
     await start.fill(isoDate(-1))
-    await expect(fieldError(page, 'startDate')).toHaveText(INVALID_DATE)
+    await expect(fieldError(page, 'startDate')).toHaveText(BEFORE_TODAY)
     await expect(start).toHaveClass(/form-input-error/)
 
     await start.fill(isoDate(0))

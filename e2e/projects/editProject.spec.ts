@@ -110,7 +110,7 @@ test.describe('Edit project', () => {
     await expect(saveButton(page)).toBeEnabled()
 
     await start.fill(isoDate(-2))
-    await expect(fieldError(page, 'startDate')).toHaveText('Selecione uma data válida')
+    await expect(fieldError(page, 'startDate')).toHaveText('A data não pode ser anterior a hoje')
     await expect(saveButton(page)).toBeDisabled()
 
     await start.fill(saved.startDate)
