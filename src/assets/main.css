@@ -467,22 +467,12 @@ input {
 }
 
 /* ---------- not found ---------- */
-.not-found {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-}
-
 .not-found-code {
-  font-size: 6rem;
+  margin-bottom: 16px;
+  color: var(--project-primary);
+  font-size: 96px;
   font-weight: 700;
   line-height: 1;
-}
-
-.not-found .title {
-  margin-top: 0.5rem;
 }
 
 /* ---------- loading ---------- */
