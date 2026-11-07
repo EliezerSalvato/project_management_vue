@@ -60,13 +60,8 @@ async function refreshAccessToken(): Promise<boolean> {
   if (!refreshInFlight) {
     refreshInFlight = (async () => {
       try {
-        const { refreshSession } = await import('@/api/auth')
         const { useAuthStore } = await import('@/stores/auth')
-        const { useUserStore } = await import('@/stores/user')
-        const authStore = useAuthStore()
-        const response = await refreshSession({ rememberMe: authStore.rememberMe })
-        authStore.setToken(response.data.token)
-        useUserStore().setUser(response.data.user)
+        await useAuthStore().refreshToken()
         return true
       } catch {
         return false
