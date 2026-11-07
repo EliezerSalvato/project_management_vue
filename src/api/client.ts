@@ -81,8 +81,11 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions = {
   const { skipAuthRetry = false, ...fetchOptions } = options
   const { useAuthStore } = await import('@/stores/auth')
   const token = useAuthStore().token
+  const locale = currentLocale()
   const headers: Record<string, string> = {
     Accept: 'application/json',
+    // The locale cookie is not shared when the app and API run on different domains.
+    'Accept-Language': locale,
     ...(fetchOptions.headers as Record<string, string> | undefined),
   }
 
@@ -95,7 +98,7 @@ export async function apiRequest<T>(path: string, options: ApiRequestOptions = {
     headers.Authorization = `Bearer ${token}`
   }
 
-  ensureLocaleCookie(currentLocale())
+  ensureLocaleCookie(locale)
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...fetchOptions,

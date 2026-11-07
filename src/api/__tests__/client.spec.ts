@@ -68,8 +68,21 @@ describe('apiRequest', () => {
       method: 'POST',
       body: '{}',
       credentials: 'include',
-      headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+      headers: {
+        Accept: 'application/json',
+        'Accept-Language': 'en',
+        'Content-Type': 'application/json',
+      },
     })
+  })
+
+  it('sends the current i18n locale as Accept-Language', async () => {
+    i18n.global.locale.value = 'pt-BR'
+    fetchMock.mockResolvedValue(jsonResponse(200, {}))
+
+    await apiRequest('/api/v1/ping')
+
+    expect(headersOf(fetchMock.mock.calls[0]!)['Accept-Language']).toBe('pt-BR')
   })
 
   it('sends FormData without a JSON content type', async () => {

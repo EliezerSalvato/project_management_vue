@@ -17,7 +17,7 @@ Base URL: `import.meta.env.VITE_API_BASE_URL` in `@/api/client`, from `.env` (se
 - Verb functions: `createRegistration`, `updateProfile`, `updateEmail`.
 - Create/update/show usually return transformed domain results; simple mutations may return the API response type.
 
-`apiRequest` already sends JSON + Bearer token, credentials/locale cookie, retries once on `401`, throws `ApiError` (`status`, `message`, `details`).
+`apiRequest` already sends JSON + Bearer token, `Accept-Language` (current locale), credentials/locale cookie, retries once on `401`, throws `ApiError` (`status`, `message`, `details`).
 
 ## Transformers (`src/transformers/`)
 
