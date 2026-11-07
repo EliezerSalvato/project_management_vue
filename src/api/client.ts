@@ -49,8 +49,10 @@ async function clearSessionAndRedirect() {
 
   useAuthStore().clearSession()
 
-  if (router.currentRoute.value.name !== 'signIn') {
-    await router.push({ name: 'signIn' })
+  const current = router.currentRoute.value
+
+  if (current.name !== 'signIn') {
+    await router.push({ name: 'signIn', query: { redirect: current.fullPath } })
   }
 }
 

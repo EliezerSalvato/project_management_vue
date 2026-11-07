@@ -66,7 +66,8 @@ test.describe('Session', () => {
 
       await page.getByRole('button', { name: 'Save' }).first().click()
 
-      await expect(page).toHaveURL('/users/sign-in')
+      // Keeps the page so the user returns to it after signing in again.
+      await expect(page).toHaveURL('/users/sign-in?redirect=/users/profile')
 
       // Local session was cleared: protected pages ask for login again.
       await page.goto('/users/profile')

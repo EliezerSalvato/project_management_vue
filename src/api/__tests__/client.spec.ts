@@ -10,7 +10,7 @@ import router from '@/router'
 
 vi.mock('@/router', () => ({
   default: {
-    currentRoute: { value: { name: 'home' } },
+    currentRoute: { value: { name: 'home', fullPath: '/projects' } },
     push: vi.fn(),
   },
 }))
@@ -225,7 +225,10 @@ describe('apiRequest', () => {
       })
       expect(fetchMock).toHaveBeenCalledTimes(2)
       expect(authStore.token).toBeNull()
-      expect(router.push).toHaveBeenCalledWith({ name: 'signIn' })
+      expect(router.push).toHaveBeenCalledWith({
+        name: 'signIn',
+        query: { redirect: '/projects' },
+      })
     })
 
     it('does not redirect when already on the sign in page', async () => {
