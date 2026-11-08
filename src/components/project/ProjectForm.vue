@@ -64,6 +64,7 @@ function isChanged(field: 'startDate' | 'endDate') {
 const validation = computed(() => {
   const dateMessage = t('project.form.errors.date')
   const beforeTodayMessage = t('project.form.errors.beforeToday')
+  const beforeStartMessage = t('project.form.errors.beforeStart')
 
   // Untouched saved dates may already be in the past; only edited dates must not be.
   const minStartDate = isChanged('startDate') ? today : undefined
@@ -86,7 +87,7 @@ const validation = computed(() => {
       dateValidator(
         {
           notBefore: minEndDate,
-          notBeforeMessage: endNotBeforeToday ? beforeTodayMessage : dateMessage,
+          notBeforeMessage: endNotBeforeToday ? beforeTodayMessage : beforeStartMessage,
         },
         dateMessage,
       ),
