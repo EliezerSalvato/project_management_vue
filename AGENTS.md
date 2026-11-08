@@ -87,7 +87,24 @@ Plain CSS in `src/assets/main.css` — no CSS framework and no PostCSS config.
 
 # Testing
 
-No test setup yet. Bug fixes: reproduce → fix → verify. Do not add tests unless asked.
+Unit tests use Vitest; e2e uses Playwright (mocked API in `e2e/`, real backend in `e2e/real-api/`).
+Bug fixes: reproduce → fix → verify. Do not add tests unless asked.
+
+When you finish any change or task, always run the full test suite and report the results:
+
+```bash
+pnpm test:unit --run
+pnpm test:e2e
+pnpm test:e2e:real-api
+```
+
+If a test fails, check whether it already failed before your change:
+
+- **Passed before** — your change broke it: fix it (the code, or the test if the behavior change was
+  intended) and run the suite again.
+- **Already failing** — report it with the output; don't fix it unless asked.
+
+Changes that touch only CSS or HTML markup (no script, logic or text changes) don't need the test run.
 
 ---
 
