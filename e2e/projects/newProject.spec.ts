@@ -21,6 +21,7 @@ test.use({ appLocale: 'pt-BR' })
 const TWO_WORDS = 'Por favor, digite ao menos duas palavras'
 const ONE_WORD = 'Por favor, digite ao menos uma palavra'
 const INVALID_DATE = 'Selecione uma data válida'
+const BEFORE_START = 'A data final não pode ser anterior à data de início'
 const BEFORE_TODAY = 'A data não pode ser anterior a hoje'
 const INVALID_COVER = 'Selecione uma imagem .jpg ou .png de até 5 MB'
 
@@ -105,11 +106,11 @@ test.describe('New project', () => {
     await page.getByLabel('Data Final').fill(isoDate(5))
     await page.getByLabel('Nome do projeto').focus()
 
-    await expect(fieldError(page, 'endDate')).toHaveText(INVALID_DATE)
+    await expect(fieldError(page, 'endDate')).toHaveText(BEFORE_START)
     await expect(fieldError(page, 'startDate')).toBeHidden()
 
     await page.getByLabel('Data Final').fill(isoDate(-1))
-    await expect(fieldError(page, 'endDate')).toHaveText(INVALID_DATE)
+    await expect(fieldError(page, 'endDate')).toHaveText(BEFORE_START)
 
     await page.getByLabel('Data Final').fill(isoDate(10))
     await expect(fieldError(page, 'endDate')).toBeHidden()

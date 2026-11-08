@@ -124,7 +124,7 @@ test.describe('Edit project', () => {
     await page.getByLabel('Nome do projeto').focus()
     await expect(end).toHaveValue(saved.endDate)
     await expect(fieldError(page, 'startDate')).toBeHidden()
-    await expect(fieldError(page, 'endDate')).toHaveText('Selecione uma data válida')
+    await expect(fieldError(page, 'endDate')).toHaveText('A data final não pode ser anterior à data de início')
     await expect(saveButton(page)).toBeDisabled()
 
     await start.fill(isoDate(10))
