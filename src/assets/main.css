@@ -447,6 +447,12 @@ input {
   color: var(--project-primary);
 }
 
+.auth-themed .toggle-switch {
+  color: var(--project-primary);
+  font-size: 0.875rem;
+  line-height: 18px;
+}
+
 /* ---------- profile ---------- */
 .profile-sections {
   display: flex;
