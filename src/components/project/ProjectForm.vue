@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useFormErrors } from '@/composables/useFormErrors'
 import { useNotificationStore } from '@/stores/notification'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
-import { parseIsoDate, todayIso } from '@/utils/date'
+import { API_TIME_ZONE, parseIsoDate, todayIso } from '@/utils/date'
 import { coverFileValidator, dateValidator, minWordsValidator } from '@/utils/validators'
 import calendarCheckIconUrl from '@/assets/icons/calendar-check-light.svg'
 import calendarDayIconUrl from '@/assets/icons/calendar-day-light.svg'
@@ -54,7 +54,7 @@ function applyCatch(error: unknown) {
   }
 }
 
-const today = todayIso()
+const today = todayIso(new Date(), API_TIME_ZONE)
 
 // A new project has no original dates, so every date counts as changed.
 function isChanged(field: 'startDate' | 'endDate') {
