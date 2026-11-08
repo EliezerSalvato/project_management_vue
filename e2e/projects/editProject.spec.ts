@@ -100,7 +100,7 @@ test.describe('Edit project', () => {
     expect(multipartValue(rawBody, 'remove_cover_image')).toBe('true')
   })
 
-  test('accepts an unchanged past date and rejects a changed one', async ({ page, api }) => {
+  test('accepts past start dates', async ({ page, api }) => {
     await openEdit(page, api)
     const start = page.getByLabel('Data de Início')
 
@@ -110,8 +110,8 @@ test.describe('Edit project', () => {
     await expect(saveButton(page)).toBeEnabled()
 
     await start.fill(isoDate(-2))
-    await expect(fieldError(page, 'startDate')).toHaveText('A data não pode ser anterior a hoje')
-    await expect(saveButton(page)).toBeDisabled()
+    await expect(fieldError(page, 'startDate')).toBeHidden()
+    await expect(saveButton(page)).toBeEnabled()
 
     await start.fill(saved.startDate)
     await expect(fieldError(page, 'startDate')).toBeHidden()

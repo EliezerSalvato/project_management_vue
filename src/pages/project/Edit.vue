@@ -105,7 +105,6 @@ watch(
         <ProjectForm
           ref="form"
           :initial="initialForm"
-          :original="{ startDate: project.startDate, endDate: project.endDate }"
           :saved-cover-url="project.coverImageUrl"
           :loading="saving"
           @submit="onSubmit"

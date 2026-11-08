@@ -3,8 +3,8 @@ import type { ProjectForm, ProjectPayload } from '@/types/project'
 import { useI18n } from 'vue-i18n'
 import { useFormErrors } from '@/composables/useFormErrors'
 import { useNotificationStore } from '@/stores/notification'
+import { parseIsoDate } from '@/utils/date'
 import { computed, onBeforeUnmount, onMounted, reactive, ref, useTemplateRef, watch } from 'vue'
-import { API_TIME_ZONE, parseIsoDate, todayIso } from '@/utils/date'
 import { coverFileValidator, dateValidator, minWordsValidator } from '@/utils/validators'
 import calendarCheckIconUrl from '@/assets/icons/calendar-check-light.svg'
 import calendarDayIconUrl from '@/assets/icons/calendar-day-light.svg'
@@ -17,11 +17,10 @@ type Field = Exclude<keyof ProjectForm, 'coverImage'>
 const props = withDefaults(
   defineProps<{
     initial?: ProjectForm
-    original?: Pick<ProjectForm, 'startDate' | 'endDate'>
     savedCoverUrl?: string | null
     loading?: boolean
   }>(),
-  { initial: undefined, original: undefined, savedCoverUrl: null, loading: false },
+  { initial: undefined, savedCoverUrl: null, loading: false },
 )
 
 const emit = defineEmits<{ submit: [payload: ProjectPayload] }>()
@@ -41,8 +40,12 @@ const touched = reactive<Record<Field, boolean>>({
 })
 
 const notificationStore = useNotificationStore()
-const { errors: apiErrors, applyCatch: applyFormCatch, createHandler, resetErrors } =
-  useFormErrors(form)
+const {
+  errors: apiErrors,
+  applyCatch: applyFormCatch,
+  createHandler,
+  resetErrors,
+} = useFormErrors(form)
 
 // General errors go to the global toast (right side, 5s) instead of inside the form.
 function applyCatch(error: unknown) {
@@ -54,41 +57,20 @@ function applyCatch(error: unknown) {
   }
 }
 
-const today = todayIso(new Date(), API_TIME_ZONE)
-
-// A new project has no original dates, so every date counts as changed.
-function isChanged(field: 'startDate' | 'endDate') {
-  return !props.original || form[field] !== props.original[field]
-}
-
 const validation = computed(() => {
   const dateMessage = t('project.form.errors.date')
-  const beforeTodayMessage = t('project.form.errors.beforeToday')
-  const beforeStartMessage = t('project.form.errors.beforeStart')
 
-  // Untouched saved dates may already be in the past; only edited dates must not be.
-  const minStartDate = isChanged('startDate') ? today : undefined
-
-  // The end date never precedes a valid start date, and an edited end date can't be in the past.
-  // `YYYY-MM-DD` strings compare chronologically, so `>` picks the later date.
+  // The end date never precedes a valid start date.
   const startDate = parseIsoDate(form.startDate) ? form.startDate : undefined
-  const endNotBeforeToday = isChanged('endDate') && (!startDate || today > startDate)
-  const minEndDate = endNotBeforeToday ? today : startDate
 
   return createHandler()
     .check(['name'], minWordsValidator(2, t('project.form.errors.twoWords')))
     .check(['clientName'], minWordsValidator(1, t('project.form.errors.oneWord')))
-    .check(
-      ['startDate'],
-      dateValidator({ notBefore: minStartDate, notBeforeMessage: beforeTodayMessage }, dateMessage),
-    )
+    .check(['startDate'], dateValidator({}, dateMessage))
     .check(
       ['endDate'],
       dateValidator(
-        {
-          notBefore: minEndDate,
-          notBeforeMessage: endNotBeforeToday ? beforeTodayMessage : beforeStartMessage,
-        },
+        { notBefore: startDate, notBeforeMessage: t('project.form.errors.beforeStart') },
         dateMessage,
       ),
     )

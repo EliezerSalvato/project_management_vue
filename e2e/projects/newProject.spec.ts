@@ -22,7 +22,6 @@ const TWO_WORDS = 'Por favor, digite ao menos duas palavras'
 const ONE_WORD = 'Por favor, digite ao menos uma palavra'
 const INVALID_DATE = 'Selecione uma data válida'
 const BEFORE_START = 'A data final não pode ser anterior à data de início'
-const BEFORE_TODAY = 'A data não pode ser anterior a hoje'
 const INVALID_COVER = 'Selecione uma imagem .jpg ou .png de até 5 MB'
 
 function saveButton(page: Page) {
@@ -86,18 +85,15 @@ test.describe('New project', () => {
     await expect(fieldError(page, 'clientName')).toBeHidden()
   })
 
-  test('shows the date error on a start date before today', async ({ page }) => {
+  test('accepts a start date before today', async ({ page }) => {
     const start = page.getByLabel('Data de Início')
 
     await start.focus()
     await page.getByLabel('Nome do projeto').focus()
     await expect(fieldError(page, 'startDate')).toHaveText(INVALID_DATE)
-
-    await start.fill(isoDate(-1))
-    await expect(fieldError(page, 'startDate')).toHaveText(BEFORE_TODAY)
     await expect(start).toHaveClass(/form-input-error/)
 
-    await start.fill(isoDate(0))
+    await start.fill(isoDate(-1))
     await expect(fieldError(page, 'startDate')).toBeHidden()
   })
 
@@ -136,7 +132,7 @@ test.describe('New project', () => {
     const invalid: [string, string, string][] = [
       ['Nome do projeto', 'Iridium', values.name],
       ['Cliente', ' ', values.clientName],
-      ['Data de Início', isoDate(-1), values.startDate],
+      ['Data de Início', '', values.startDate],
       ['Data Final', isoDate(-1), values.endDate],
     ]
     for (const [label, wrong, right] of invalid) {
